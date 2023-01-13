@@ -6,13 +6,13 @@ from api_books.models import Book, Category
 class BooksListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('id', 'title', 'author')
+        fields = ('id', 'title', 'author', 'is_read')
 
 
 class BookAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('id', 'title', 'author', 'category')
+        fields = ('id', 'title', 'author')
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user

@@ -45,6 +45,7 @@ class Book(models.Model):
     category = models.ForeignKey(
         Category,
         on_delete=models.RESTRICT,
+        null=True
     )
 
     user = models.ForeignKey(

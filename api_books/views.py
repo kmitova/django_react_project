@@ -4,7 +4,8 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateAPIView
 
 from api_books.models import Book, Category
-from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer
+from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer, \
+    BookUpdateStatusSerializer
 
 
 class BooksListView(ListAPIView):
@@ -42,6 +43,21 @@ class BookAddAPIView(ListCreateAPIView):
         if category_id:
             queryset = queryset.filter(category_id=category_id)
         return queryset
+
+
+class BookStatusUpdateAPIView(RetrieveUpdateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookUpdateStatusSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_object(self):
+        book = super().get_object()
+        if book.user != self.request.user:
+            raise PermissionDenied
+        return book
+
 
 
 class CategoriesAPIView(ListAPIView):

@@ -14,6 +14,8 @@ const Books = () => {
   const [category, setCategory] = useState(1)
   const [isRead, setIsRead] = useState(false)
 
+    const [bookIsRead, setBooksIsRead] = useState(false)
+
     const url = 'http://127.0.0.1:8000/'
   useEffect(() => {
     fetchData()
@@ -76,6 +78,7 @@ const Books = () => {
 
   }
 
+
   const handleSubmit = async (e) => {
     e.preventDefault()
 
@@ -106,13 +109,35 @@ const Books = () => {
             })
   }
 
-  // function getCategory(e) {
-  //     console.log(e)
-  //     setCategory(Number(e.target.value))
-  //     console.log(e)
-  // }
+  // edit book status in backend too
+  const changeStatus = async(e, book) => {
+      e.preventDefault();
+      setBooksIsRead(e.target.checked)
+      let token = getAccessToken()
+      let data = {
+          is_read: bookIsRead
+      }
+      console.log(data)
+      await axios.put(`${url}api_books/change_book_status/${book.id}/`,
+          data,{
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        }
+        })
+      .then((result) => {
+            // console.log(category)
+                console.log(result.data);
+            })
+            .catch((error) => {
+                // console.log(category)
+                console.log(error);
+            })
 
-  // const FORM_ENDPOINT = `${url}api-books/add-book/`;
+
+  }
+
 
   return (
     <section>
@@ -121,7 +146,16 @@ const Books = () => {
         {!user ? <h2>login to see your books</h2> : <h2>Book count: {books.length}</h2>}
         <div>
             {books.map(b =>(
-                <p key={b.id}>{b.title}</p>
+                <div key={b.id}>
+                     <p>{b.title}</p>
+                    <p>{b.author}</p>
+                    <form action="">
+                        <label htmlFor="">Book is read</label>
+
+                        {b.is_read ? <input type="checkbox" name="is_read" checked onChange={(e) => changeStatus(e, b)}/> : <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, b)}/>}
+                    </form>
+                </div>
+
             ))}
         </div>
       <div>
@@ -152,9 +186,9 @@ const Books = () => {
           {/*  <div>Selected value is : {category}</div>*/}
           <div className="form-group">
             <label htmlFor="">Book is read</label>
-            <select id="categories" value={isRead} onChange={(e) => setIsRead(e.target.value)}>
-              <option value="true">True</option>
-              <option value="false">False</option>
+            <select id="categories" value={isRead} onChange={(e) => setIsRead((e.target.value))}>
+              <option value='true'>True</option>
+              <option value='false'>False</option>
             </select>
           </div>
           <button className="submit-btn">

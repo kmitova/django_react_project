@@ -9,11 +9,10 @@ class BooksListSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'author', 'is_read')
 
 
-
 class BookAddSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('id', 'title', 'author', 'is_read')
+        fields = ('id', 'title', 'author',)
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user

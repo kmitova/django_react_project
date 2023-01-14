@@ -1,5 +1,6 @@
 import {useContext, useEffect, useState} from "react";
 import UserInfo from "../components/UserInfo";
+import SearchBook from "../components/SearchBook";
 import AuthContext from "../context/AuthContext";
 import axios from "axios";
 
@@ -86,8 +87,6 @@ const Books = () => {
     let data = {
         title: title,
           author: author,
-          // category: category,
-          is_read: isRead,
     }
     console.log(categories)
     console.log(data)
@@ -109,34 +108,34 @@ const Books = () => {
             })
   }
 
-  // edit book status in backend too
-  const changeStatus = async(e, book) => {
-      e.preventDefault();
-      setBooksIsRead(e.target.checked)
-      let token = getAccessToken()
-      let data = {
-          is_read: bookIsRead
-      }
-      console.log(data)
-      await axios.put(`${url}api_books/change_book_status/${book.id}/`,
-          data,{
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-        }
-        })
-      .then((result) => {
-            // console.log(category)
-                console.log(result.data);
-            })
-            .catch((error) => {
-                // console.log(category)
-                console.log(error);
-            })
 
-
-  }
+  // const changeStatus = async(e, book) => {
+  //     e.preventDefault();
+  //     setBooksIsRead(e.target.checked)
+  //     let token = getAccessToken()
+  //     let data = {
+  //         is_read: bookIsRead
+  //     }
+  //     console.log(data)
+  //     await axios.put(`${url}api_books/change_book_status/${book.id}/`,
+  //         data,{
+  //       headers: {
+  //           'Accept': 'application/json',
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${token}`
+  //       }
+  //       })
+  //     .then((result) => {
+  //           // console.log(category)
+  //               console.log(result.data);
+  //           })
+  //           .catch((error) => {
+  //               // console.log(category)
+  //               console.log(error);
+  //           })
+  //
+  //
+  // }
 
 
   return (
@@ -144,20 +143,21 @@ const Books = () => {
       {user && <UserInfo user={user} />}
       <h1>You are on Books page!</h1>
         {!user ? <h2>login to see your books</h2> : <h2>Book count: {books.length}</h2>}
-        <div>
-            {books.map(b =>(
-                <div key={b.id}>
-                     <p>{b.title}</p>
-                    <p>{b.author}</p>
-                    <form action="">
-                        <label htmlFor="">Book is read</label>
+        <SearchBook books={books}/>
+        {/*<div>*/}
+        {/*    {books.map(b =>(*/}
+        {/*        <div key={b.id}>*/}
+        {/*             <p>{b.title}</p>*/}
+        {/*            <p>{b.author}</p>*/}
+        {/*            <form action="">*/}
+        {/*                <label htmlFor="">Book is read</label>*/}
 
-                        {b.is_read ? <input type="checkbox" name="is_read" checked onChange={(e) => changeStatus(e, b)}/> : <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, b)}/>}
-                    </form>
-                </div>
+        {/*                {b.is_read ? <input type="checkbox" name="is_read" checked onChange={(e) => changeStatus(e, b)}/> : <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, b)}/>}*/}
+        {/*            </form>*/}
+        {/*        </div>*/}
 
-            ))}
-        </div>
+        {/*    ))}*/}
+        {/*</div>*/}
       <div>
         <form
       onSubmit={handleSubmit}
@@ -184,13 +184,13 @@ const Books = () => {
           {/*  </select>*/}
           {/*</div>*/}
           {/*  <div>Selected value is : {category}</div>*/}
-          <div className="form-group">
-            <label htmlFor="">Book is read</label>
-            <select id="categories" value={isRead} onChange={(e) => setIsRead((e.target.value))}>
-              <option value='true'>True</option>
-              <option value='false'>False</option>
-            </select>
-          </div>
+          {/*<div className="form-group">*/}
+          {/*  <label htmlFor="">Book is read</label>*/}
+          {/*  <select id="categories" value={isRead} onChange={(e) => setIsRead((e.target.value))}>*/}
+          {/*    <option value='true'>True</option>*/}
+          {/*    <option value='false'>False</option>*/}
+          {/*  </select>*/}
+          {/*</div>*/}
           <button className="submit-btn">
             Add book
           </button>

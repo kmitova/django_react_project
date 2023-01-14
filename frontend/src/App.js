@@ -25,7 +25,7 @@ function App() {
             <Route element={<Books />} path="/books" />
           </Routes>
         </AuthProvider>
-        <Footer />
+        {/*<Footer />*/}
       </div>
     </Router>
   );

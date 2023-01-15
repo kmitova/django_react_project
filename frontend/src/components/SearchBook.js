@@ -1,20 +1,14 @@
 import React, {useState} from 'react';
 import axios from "axios";
+import getAccessToken from "../utils/getToken";
+import {URL} from "../utils/url";
 
 
 const SearchBook = (props) => {
     const {books} = props;
-    const url = 'http://127.0.0.1:8000/'
     const [searchTerm, setSearchTerm] = useState('')
     const [bookIsRead, setBooksIsRead] = useState(false)
 
-    function getAccessToken() {
-        let result = window.localStorage.getItem('authTokens');
-        if (!result) {
-            return "";
-        }
-        return JSON.parse(result).access;
-    }
 
     const changeStatus = async (e, book) => {
         e.preventDefault();
@@ -24,7 +18,7 @@ const SearchBook = (props) => {
             is_read: bookIsRead
         }
         console.log(data)
-        await axios.put(`${url}api_books/change_book_status/${book.id}/`,
+        await axios.put(`${URL}api_books/change_book_status/${book.id}/`,
             data, {
                 headers: {
                     'Accept': 'application/json',
@@ -57,25 +51,24 @@ const SearchBook = (props) => {
                         return ''
                     }
                 })
-
                 .map((book) => (
-
-                    <div key={book.id}>
-                        <p>{book.title}</p>
-                        <p>{book.author}</p>
-                        <form action="">
-                            <label htmlFor="">Book is read</label>
-
-                            {book.is_read ?
-                                <input type="checkbox" name="is_read" checked onChange={(e) => changeStatus(e, book)}/> :
-                                <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, book)}/>}
-                        </form>
-                    </div>
+                        <div key={book.id}>
+                            <p>{book.title}</p>
+                            <p>{book.author}</p>
+                            <form action="">
+                                <label htmlFor="">Book is read</label>
+                                {book.is_read ?
+                                    <input type="checkbox" name="is_read" checked
+                                           onChange={(e) => changeStatus(e, book)}/> :
+                                    <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, book)}/>}
+                            </form>
+                        </div>
                     )
                 )
             }
-</div>
-)
+        </div>
+    )
 }
 
 export default SearchBook;
+

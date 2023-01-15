@@ -2,6 +2,7 @@ import React, {useState} from 'react';
 import axios from "axios";
 import getAccessToken from "../utils/getToken";
 import {URL} from "../utils/url";
+import {Link} from "react-router-dom";
 
 
 const SearchBook = (props) => {
@@ -62,6 +63,9 @@ const SearchBook = (props) => {
                                            onChange={(e) => changeStatus(e, book)}/> :
                                     <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, book)}/>}
                             </form>
+                            <Link to={`/book/${book.id}`}>
+                                to book details
+                            </Link>
                         </div>
                     )
                 )

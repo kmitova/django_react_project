@@ -1,12 +1,28 @@
 from rest_framework import serializers
 
-from api_books.models import Book, Category
+from api_books.models import Book, Category, Review
 
 
 class BooksListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
         fields = ('id', 'title', 'author', 'is_read')
+
+
+class BookDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ('id', 'title', 'author', 'is_read', 'category')
+
+
+class BookAddReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('id', 'rating', 'content', 'book')
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
 
 
 class BookAddSerializer(serializers.ModelSerializer):
@@ -37,8 +53,3 @@ class CategorySerializer(serializers.ModelSerializer):
         fields = ('id', 'name',)
 
 
-
-class BookDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Book
-        fields = ('id', 'title', 'author', 'is_read', 'category')

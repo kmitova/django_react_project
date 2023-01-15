@@ -3,7 +3,7 @@ import "./index.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import PrivateRoute from "./utils/PrivateRoute";
+// import PrivateRoute from "./utils/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./views/HomePage";
 import Login from "./views/LoginPage";
@@ -27,7 +27,7 @@ function App() {
             <Route element={<BookDetails />} path="/book/:id"/>
           </Routes>
         </AuthProvider>
-        {/*<Footer />*/}
+        <Footer />
       </div>
     </Router>
   );

@@ -54,3 +54,68 @@ class Book(models.Model):
     )
 
 
+class Review(models.Model):
+    # str_fields = ('id', 'book', 'updated_at')
+
+    STARS5 = '5'
+    STARS4 = '4'
+    STARS3 = '3'
+    STARS2 = '2'
+    STARS1 = '1'
+
+    RATING_CHOICES = [
+        (STARS5, '5 stars'),
+        (STARS4, '4 stars'),
+        (STARS3, '3 stars'),
+        (STARS2, '2 stars'),
+        (STARS1, '1 star')
+    ]
+
+    content = models.TextField(
+        null=False,
+        blank=False,
+        unique=True,
+        editable=True,
+    )
+
+    rating = models.CharField(
+        max_length=20,
+        choices=RATING_CHOICES,
+        default='no rating',
+        null=False,
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    book = models.ForeignKey(
+        Book, on_delete=models.RESTRICT, blank=False, null=False
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
+
+    # slug = models.SlugField(
+    #     max_length=255,
+    #     unique=True,
+    #     null=False,
+    #     blank=True,
+    # )
+    #
+    #
+    #
+    # def save(self, *args, **kwargs):
+    #     super().save(*args, **kwargs)
+    #
+    #     if not self.slug:
+    #         title_slug_list = self.book.title.split(" ")
+    #         title_slug = "-".join(title_slug_list)
+    #
+    #         self.slug = slugify(f'review-of-{self.id}-{title_slug}')
+    #
+    #     return super().save(*args, **kwargs)
+
+    class Meta:
+        ordering = ('-updated_at',)

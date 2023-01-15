@@ -8,36 +8,36 @@ import {Link} from "react-router-dom";
 const SearchBook = (props) => {
     const {books} = props;
     const [searchTerm, setSearchTerm] = useState('')
-    const [bookIsRead, setBooksIsRead] = useState(false)
-
-
-    const changeStatus = async (e, book) => {
-        e.preventDefault();
-        setBooksIsRead(e.target.checked)
-        let token = getAccessToken()
-        let data = {
-            is_read: bookIsRead
-        }
-        console.log(data)
-        await axios.put(`${URL}api_books/change_book_status/${book.id}/`,
-            data, {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then((result) => {
-                // console.log(category)
-                console.log(result.data);
-            })
-            .catch((error) => {
-                // console.log(category)
-                console.log(error);
-            })
-
-
-    }
+    // const [bookIsRead, setBooksIsRead] = useState(false)
+    //
+    //
+    // const changeStatus = async (e, book) => {
+    //     e.preventDefault();
+    //     setBooksIsRead(e.target.checked)
+    //     let token = getAccessToken()
+    //     let data = {
+    //         is_read: bookIsRead
+    //     }
+    //     console.log(data)
+    //     await axios.put(`${URL}api_books/change_book_status/${book.id}/`,
+    //         data, {
+    //             headers: {
+    //                 'Accept': 'application/json',
+    //                 'Content-Type': 'application/json',
+    //                 'Authorization': `Bearer ${token}`
+    //             }
+    //         })
+    //         .then((result) => {
+    //             // console.log(category)
+    //             console.log(result.data);
+    //         })
+    //         .catch((error) => {
+    //             // console.log(category)
+    //             console.log(error);
+    //         })
+    //
+    //
+    // }
     return (
         <div className='search-container'>
             <input type="text" placeholder='Search for a title...'
@@ -56,13 +56,13 @@ const SearchBook = (props) => {
                         <div key={book.id}>
                             <p>{book.title}</p>
                             <p>{book.author}</p>
-                            <form action="">
-                                <label htmlFor="">Book is read</label>
-                                {book.is_read ?
-                                    <input type="checkbox" name="is_read" checked
-                                           onChange={(e) => changeStatus(e, book)}/> :
-                                    <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, book)}/>}
-                            </form>
+                            {/*<form action="">*/}
+                            {/*    <label htmlFor="">Book is read</label>*/}
+                            {/*    {book.is_read ?*/}
+                            {/*        <input type="checkbox" name="is_read" checked*/}
+                            {/*               onChange={(e) => changeStatus(e, book)}/> :*/}
+                            {/*        <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, book)}/>}*/}
+                            {/*</form>*/}
                             <Link to={`/book/${book.id}`}>
                                 to book details
                             </Link>

@@ -1,7 +1,7 @@
 from django.urls import path
 
 from api_books.views import BookAddAPIView, BookDetailsAPIView, CategoriesAPIView, BooksListView, \
-    BookStatusUpdateAPIView, ReviewAddAPIView, ReviewAPIView, ReviewUpdateAPIView
+    BookStatusUpdateAPIView, ReviewAddAPIView, ReviewAPIView, ReviewUpdateAPIView, ReviewDeleteAPIView
 
 urlpatterns = (
     path('books/', BooksListView.as_view(), name='books list'),
@@ -11,10 +11,7 @@ urlpatterns = (
     path('add_review/', ReviewAddAPIView.as_view(), name='add review'),
     path('show_review/', ReviewAPIView.as_view(), name='show review'),
     path('edit_review/<int:pk>/', ReviewUpdateAPIView.as_view(), name='edit review'),
+    path('delete_review/<int:pk>/', ReviewDeleteAPIView.as_view(), name='delete review'),
     path('categories/', CategoriesAPIView.as_view(), name='book categories'),
 )
 
-
-
-# TODO:
-#  SHOW EXISTING REVIEW IF ANY (VIEW, SERIALIZER, URL-GET METHOD)

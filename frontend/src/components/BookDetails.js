@@ -140,6 +140,30 @@ const BookDetails = () => {
         });
     };
 
+    const deleteReview = async (e) => {
+        e.preventDefault()
+        let token = getAccessToken();
+        let data = {
+            id: review.id,
+        }
+        console.log(data)
+        await axios.delete(`${URL}api_books/delete_review/${review.id}/`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                data
+            })
+            .then((result) => {
+                console.log(result.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
+
 
     return (
         <div>
@@ -193,6 +217,7 @@ const BookDetails = () => {
                                       onChange={handleEditChange}></textarea>
                         </div>
                         <button>Edit review</button>
+                        <button onClick={deleteReview}>Delete review</button>
                     </form>
                 </div>}
         </div>

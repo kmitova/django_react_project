@@ -5,7 +5,7 @@ from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpda
 
 from api_books.models import Book, Category, Review
 from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer, \
-    BookUpdateStatusSerializer, BookAddReviewSerializer
+    BookUpdateStatusSerializer, BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer
 
 
 class BooksListView(ListAPIView):
@@ -14,6 +14,17 @@ class BooksListView(ListAPIView):
     )
     queryset = Book.objects.all()
     serializer_class = BooksListSerializer
+
+    def get_queryset(self):
+        return self.queryset.filter(user_id=self.request.user.id).distinct()
+
+
+class ReviewAPIView(ListAPIView):
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
 
     def get_queryset(self):
         return self.queryset.filter(user_id=self.request.user.id).distinct()
@@ -54,6 +65,20 @@ class BookStatusUpdateAPIView(RetrieveUpdateAPIView):
         if book.user != self.request.user:
             raise PermissionDenied
         return book
+
+
+class ReviewUpdateAPIView(RetrieveUpdateAPIView):
+    queryset = Review.objects.all()
+    serializer_class = BookEditReviewSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_object(self):
+        review = super().get_object()
+        if review.user != self.request.user:
+            raise PermissionDenied
+        return review
 
 
 class CategoriesAPIView(ListAPIView):

@@ -35,10 +35,13 @@ const Books = () => {
     return (
         <section>
             {user && <UserInfo user={user}/>}
-            <h1>You are on Books page!</h1>
-            {!user ? <h2>login to see your books</h2> : <h2>Book count: {books.length}</h2>}
-            <SearchBook books={books}/>
-            <AddBook/>
+            {!user ? <h2>login to see your books</h2> :
+                <section>
+                    <h2>Book count: {books.length}</h2>
+                    <SearchBook books={books}/>
+                    <AddBook/>
+                </section>
+            }
         </section>
     );
 };

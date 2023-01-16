@@ -9,6 +9,12 @@ class BooksListSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'author', 'is_read')
 
 
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('id', 'content', 'rating', 'book')
+
+
 class BookDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
@@ -23,6 +29,16 @@ class BookAddReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+
+
+class BookEditReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Review
+        fields = ('id', 'rating', 'content', 'book')
+
+    def update(self, instance, validated_data):
+        super().update(instance=instance, validated_data=validated_data)
+        return instance
 
 
 class BookAddSerializer(serializers.ModelSerializer):

@@ -46,10 +46,6 @@ class BookDeleteReviewSerializer(serializers.ModelSerializer):
         model = Review
         fields = ('id',)
 
-    # def update(self, instance, validated_data):
-    #     super().update(instance=instance, validated_data=validated_data)
-    #     return instance
-
 
 class BookAddSerializer(serializers.ModelSerializer):
     class Meta:

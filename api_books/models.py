@@ -119,3 +119,30 @@ class Review(models.Model):
 
     class Meta:
         ordering = ('-updated_at',)
+
+
+class Comment(models.Model):
+    MAX_TEXT_LENGTH = 300
+    text = models.CharField(
+        max_length=MAX_TEXT_LENGTH,
+        null=False,
+        blank=False,
+    )
+
+    publication_date = models.DateTimeField(
+        auto_now_add=True,
+        null=False,
+        blank=True,
+    )
+
+    review = models.ForeignKey(
+        Review,
+        on_delete=models.CASCADE,
+        null=False,
+        blank=True,
+    )
+
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE,)
+
+    class Meta:
+        ordering = ['publication_date']

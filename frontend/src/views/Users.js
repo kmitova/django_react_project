@@ -9,40 +9,42 @@ import {URL} from "../utils/url";
 const Users = () => {
     const {user} = useContext(AuthContext);
 
-    // const [books, setBooks] = useState([])
+    const [users, setUsers] = useState([])
 
 
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    {/*        let token = getAccessToken();*/}
-    {/*        let result = await axios.get(`${URL}api_books/books/`, {*/}
-    {/*            headers: {*/}
-    {/*                'Accept': 'application/json',*/}
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer  ${token}`
-    //             }
-    //         });
-    //         if (result.status === 200) {
-    //             const books = result.data
-    //             console.log(books)
-    //             setBooks(books)
-    //         }
-    //     }
-    //     fetchData()
-    //         .catch(console.error)
-    // }, [])
+    useEffect(() => {
+        const fetchData = async () => {
+        let token = getAccessToken()
+        let result = await axios.get(`${URL}api_users/users/`,
+        {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer  ${token}`
+                }
+            });
+            if (result.status === 200) {
+                console.log(result.data)
+                setUsers(result.data)
+            }
+        }
+        fetchData()
+            .catch(console.error)
+    }, [])
 
     return (
         <section>
             {user && <UserInfo user={user}/>}
             <h1>Users page</h1>
-            {/*{!user ? <h2>login to see your books</h2> :*/}
-            {/*    <section>*/}
-            {/*        <h2>Book count: {books.length}</h2>*/}
-            {/*        <SearchBook books={books}/>*/}
-            {/*        <AddBook/>*/}
-            {/*    </section>*/}
-            {/*}*/}
+            {!user ? <h2>login to see the users page</h2> :
+                <section>
+                    <h2>Users:</h2>
+                    <ul>
+                       {users.map((user) => (<li key={user.id}>{user.username}</li>))}
+                    </ul>
+                </section>
+            }
+
         </section>
     );
 };

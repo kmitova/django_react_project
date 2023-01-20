@@ -1,4 +1,5 @@
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.generics import ListAPIView
 
@@ -11,8 +12,8 @@ class UsersListAPIView(ListAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
     )
-    queryset = UserModel.objects.all()
     serializer_class = UserListSerializer
 
-    # def get_queryset(self):
-    #     return self.queryset.filter(id=self.request.user.id).distinct()
+    def get_queryset(self):
+        return UserModel.objects.exclude(id=self.request.user.id)
+    #

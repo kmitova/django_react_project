@@ -14,6 +14,8 @@ const Navbar = () => {
               <Link to="/">Home</Link>
               <Link to="/protected">Protected Page</Link>
                 <Link to="/books">Books</Link>
+                <Link to="/users">Users</Link>
+
               <button onClick={logoutUser}>Logout</button>
             </>
           ) : (

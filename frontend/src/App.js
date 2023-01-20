@@ -11,6 +11,7 @@ import Register from "./views/RegisterPage";
 import ProtectedPage from "./views/ProtectedPage";
 import Books from "./views/Books";
 import BookDetails from "./components/BookDetails";
+import Users from "./views/Users";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
             <Route element={<Register />} path="/register" />
             <Route element={<Home />} path="/" />
             <Route element={<Books />} path="/books" />
+            <Route element={<Users />} path="/users" />
             <Route element={<BookDetails />} path="/book/:id"/>
           </Routes>
         </AuthProvider>

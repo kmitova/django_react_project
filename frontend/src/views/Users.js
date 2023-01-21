@@ -5,6 +5,7 @@ import axios from "axios";
 import getAccessToken from "../utils/getToken";
 
 import {URL} from "../utils/url";
+import {Link} from "react-router-dom";
 
 const Users = () => {
     const {user} = useContext(AuthContext);
@@ -40,7 +41,7 @@ const Users = () => {
                 <section>
                     <h2>Users:</h2>
                     <ul>
-                       {users.map((user) => (<li key={user.id}>{user.username}</li>))}
+                       {users.map((user) => (<li key={user.id}><Link to={`/user/${user.id}`}>{user.username}</Link></li>))}
                     </ul>
                 </section>
             }

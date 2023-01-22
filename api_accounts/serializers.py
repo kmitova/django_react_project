@@ -3,6 +3,8 @@ from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
+from api_accounts.models import Profile
+
 UserModel = get_user_model()
 
 
@@ -23,10 +25,11 @@ class RegisterSerializer(serializers.ModelSerializer):
         write_only=True, required=True
     )
     email = serializers.EmailField(required=True)
+    age = serializers.IntegerField()
 
     class Meta:
         model = UserModel
-        fields = ('username', 'email', 'password', 'password2')
+        fields = ('username', 'email', 'password', 'password2', 'age')
 
     def validate(self, attrs):
         if attrs['password'] != attrs['password2']:
@@ -43,6 +46,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         )
 
         user.set_password(validated_data['password'])
-        user.save()
-        return user
+        # user.save()
+        # return user
+        used_id = user.save()
+        Profile.objects.create(
+            user_id=user.id,
+            age=validated_data['age']
+        )
+        return validated_data
+
 

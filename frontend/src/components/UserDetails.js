@@ -6,6 +6,7 @@ import {URL} from "../utils/url";
 
 
 const UserDetails = () => {
+
     const {id} = useParams()
     const [user, setUser] = useState([]);
 
@@ -30,12 +31,12 @@ const UserDetails = () => {
     }, [id]);
 
 
+
     return (
         <div>
             <h1>User details page</h1>
             <h2>{user.username}</h2>
-
-
+            <h4>{user.email}</h4>
         </div>
 
     )

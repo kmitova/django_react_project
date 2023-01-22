@@ -1,10 +1,9 @@
 from django.contrib.auth import get_user_model
-from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 
-from api_users.serializers import UserListSerializer, UserDetailsSerializer
+from api_users.serializers import UserListSerializer, UserDetailsSerializer, CurrentUserDetailsSerializer
 
 UserModel = get_user_model()
 
@@ -28,8 +27,18 @@ class UserDetailsAPIView(RetrieveUpdateAPIView):
     )
 
 
-    # def get_object(self):
-    #     user = super().get_object()
-    #     if book.user != self.request.user:
-    #         raise PermissionDenied
-    #     return book
+class CurrentUserDetailsAPIView(RetrieveUpdateAPIView):
+    queryset = UserModel.objects.all()
+    serializer_class = CurrentUserDetailsSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_object(self):
+        user = super().get_object()
+        if user != self.request.user:
+            raise PermissionDenied
+        return user
+
+
+

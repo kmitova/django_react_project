@@ -5,13 +5,14 @@ function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
-    const [email, setEmail] = useState("");
+  const [age, setAge] = useState("");
+  const [email, setEmail] = useState("");
 
   const { registerUser } = useContext(AuthContext);
 
   const handleSubmit = async e => {
     e.preventDefault();
-    registerUser(username, email, password, password2);
+    registerUser(username, email, password, password2, age);
   };
 
   return (
@@ -36,6 +37,16 @@ function Register() {
             id="email"
             onChange={e => setEmail(e.target.value)}
             placeholder="Email"
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="age">Age</label>
+          <input
+            type="number"
+            id="age"
+            onChange={e => setAge(e.target.value)}
+            placeholder="Age"
             required
           />
         </div>

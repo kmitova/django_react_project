@@ -5,7 +5,7 @@ import {URL} from "../../utils/url";
 
 const AddReview = (props) => {
     const [content, setContent] = useState('')
-    const [rating, setRating] = useState('')
+    const [rating, setRating] = useState(5)
     const {book} = props;
 
     const handleSubmit = async (e) => {

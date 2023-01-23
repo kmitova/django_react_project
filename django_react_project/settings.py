@@ -9,6 +9,7 @@ https://docs.djangoproject.com/en/4.1/topics/settings/
 For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.1/ref/settings/
 """
+import os
 from datetime import timedelta
 
 import environ
@@ -48,6 +49,7 @@ INSTALLED_APPS = [
 
     'api_accounts',
     'api_books',
+    'api_users',
 ]
 
 MIDDLEWARE = [
@@ -179,3 +181,6 @@ SIMPLE_JWT = {
 }
 
 CORS_ALLOW_ALL_ORIGINS = True
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'

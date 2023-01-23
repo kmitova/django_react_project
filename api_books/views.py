@@ -17,8 +17,8 @@ class BooksListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BooksListSerializer
 
-    def get_queryset(self):
-        return self.queryset.filter(user_id=self.request.user.id).distinct()
+    # def get_queryset(self):
+    #     return self.queryset.filter(user_id=self.request.user.id).distinct()
 
 
 class ReviewAPIView(ListAPIView):
@@ -111,8 +111,8 @@ class BookDetailsAPIView(RetrieveUpdateAPIView):
 
     def get_object(self):
         book = super().get_object()
-        if book.user != self.request.user:
-            raise PermissionDenied
+        # if book.user != self.request.user:
+        #     raise PermissionDenied
         return book
 
 

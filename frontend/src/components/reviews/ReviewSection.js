@@ -24,7 +24,7 @@ const ReviewSection = (props) => {
                 if (result.data.length === 1) {
                     setReview(result.data[0])
                 } else {
-                    console.log('no review of this book yet')
+                    console.log('no review of this book from this user yet')
                 }
             }
         };

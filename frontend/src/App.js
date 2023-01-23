@@ -13,6 +13,7 @@ import Books from "./views/Books";
 import BookDetails from "./components/BookDetails";
 import Users from "./views/Users";
 import UserDetails from "./components/UserDetails";
+import ProfilePage from "./views/ProfilePage";
 
 function App() {
   return (
@@ -29,6 +30,7 @@ function App() {
             <Route element={<Users />} path="/users" />
             <Route element={<BookDetails />} path="/book/:id"/>
             <Route element={<UserDetails />} path="/user/:id"/>
+            <Route element={<ProfilePage />} path="/your_profile/:id"/>
           </Routes>
         </AuthProvider>
         <Footer />

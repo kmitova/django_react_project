@@ -36,11 +36,11 @@ class Book(models.Model):
     #     blank=False,
     # )
 
-    is_read = models.BooleanField(
-        default=DEFAULT_STATE,
-        null=False,
-        blank=False,
-    )
+    # is_read = models.BooleanField(
+    #     default=DEFAULT_STATE,
+    #     null=False,
+    #     blank=False,
+    # )
 
     category = models.ForeignKey(
         Category,
@@ -48,10 +48,10 @@ class Book(models.Model):
         null=True
     )
 
-    user = models.ForeignKey(
-        UserModel,
-        on_delete=models.RESTRICT,
-    )
+    # user = models.ForeignKey(
+    #     UserModel,
+    #     on_delete=models.RESTRICT,
+    # )
 
 
 class Review(models.Model):

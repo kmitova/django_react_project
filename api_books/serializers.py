@@ -6,7 +6,7 @@ from api_books.models import Book, Category, Review
 class BooksListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('id', 'title', 'author', 'is_read')
+        fields = ('id', 'title', 'author',)
 
 
 class ReviewSerializer(serializers.ModelSerializer):
@@ -18,7 +18,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 class BookDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = ('id', 'title', 'author', 'is_read', 'category')
+        fields = ('id', 'title', 'author', 'category')
 
 
 class BookAddReviewSerializer(serializers.ModelSerializer):

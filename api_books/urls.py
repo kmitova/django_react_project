@@ -5,8 +5,8 @@ from api_books.views import BookAddAPIView, BookDetailsAPIView, CategoriesAPIVie
 
 urlpatterns = (
     path('books/', BooksListView.as_view(), name='books list'),
-    path('add_book/', BookAddAPIView.as_view(), name='add book'),
-    path('change_book_status/<int:pk>/', BookStatusUpdateAPIView.as_view(), name='change book status'),
+    # path('add_book/', BookAddAPIView.as_view(), name='add book'),
+    # path('change_book_status/<int:pk>/', BookStatusUpdateAPIView.as_view(), name='change book status'),
     path('book/<int:pk>/', BookDetailsAPIView.as_view(), name='details book'),
     path('add_review/', ReviewAddAPIView.as_view(), name='add review'),
     path('show_review/', ReviewAPIView.as_view(), name='show review'),

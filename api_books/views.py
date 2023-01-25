@@ -27,6 +27,7 @@ class ReviewAPIView(ListAPIView):
     )
     queryset = Review.objects.all()
     serializer_class = ReviewSerializer
+    print(queryset)
 
     def get_queryset(self):
         return self.queryset.filter(user_id=self.request.user.id).distinct()

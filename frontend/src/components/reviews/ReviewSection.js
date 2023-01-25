@@ -6,7 +6,7 @@ import {URL} from "../../utils/url";
 import EditDeleteReview from "./EditDeleteReview";
 
 const ReviewSection = (props) => {
-    const {book} = props;
+    const { book } = props;
     const [review, setReview] = useState('')
 
 
@@ -21,16 +21,22 @@ const ReviewSection = (props) => {
                 }
             })
             if (result.status === 200) {
-                if (result.data.length === 1) {
-                    setReview(result.data[0])
-                } else {
+                console.log(result.data)
+                    for (let i of result.data) {
+                        if (i.book === book.id) {
+                            setReview(i)
+
+                        }
+                    }
+                }
+                else {
                     console.log('no review of this book from this user yet')
                 }
             }
-        };
+
         fetchReview()
             .catch(console.error)
-    }, [])
+    }, [book.id])
 
 
 

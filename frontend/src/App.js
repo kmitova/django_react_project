@@ -14,6 +14,7 @@ import BookDetails from "./components/BookDetails";
 import Users from "./views/Users";
 import UserDetails from "./components/UserDetails";
 import ProfilePage from "./views/ProfilePage";
+import EditProfile from "./components/PofileEdit";
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route element={<BookDetails />} path="/book/:id"/>
             <Route element={<UserDetails />} path="/user/:id"/>
             <Route element={<ProfilePage />} path="/your_profile/:id"/>
+            <Route element={<EditProfile />} path="/edit-profile/:id"/>
           </Routes>
         </AuthProvider>
         <Footer />

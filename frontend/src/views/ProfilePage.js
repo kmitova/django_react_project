@@ -1,11 +1,11 @@
-import {useContext, useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import UserInfo from "../components/UserInfo";
 import AuthContext from "../context/AuthContext";
 import axios from "axios";
 import getAccessToken from "../utils/getToken";
 
 import {URL} from "../utils/url";
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 
 const ProfilePage = () => {
     const {user} = useContext(AuthContext);
@@ -52,7 +52,12 @@ const ProfilePage = () => {
                     <p>{profile.email}</p>
                     <p>{age}</p>
                     <p>{profilePic}</p>
+                    {/* LINK TO PROFILE EDIT FORM   */}
+                    <Link to={`/edit-profile/${profile.id}`}>
+                                 Edit your profile
+                    </Link>
                 </section>
+
             }
 
         </section>

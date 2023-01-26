@@ -3,7 +3,8 @@ from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListAPIView, RetrieveUpdateAPIView
 
-from api_users.serializers import UserListSerializer, UserDetailsSerializer, CurrentUserDetailsSerializer
+from api_users.serializers import UserListSerializer, UserDetailsSerializer, CurrentUserDetailsSerializer, \
+    ProfileEditSerializer
 
 UserModel = get_user_model()
 
@@ -40,5 +41,18 @@ class CurrentUserDetailsAPIView(RetrieveUpdateAPIView):
             raise PermissionDenied
         return user
 
+
+class EditProfileAPIView(RetrieveUpdateAPIView):
+    queryset = UserModel.objects.all()
+    serializer_class = ProfileEditSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_object(self):
+        user = super().get_object()
+        if user != self.request.user:
+            raise PermissionDenied
+        return user
 
 

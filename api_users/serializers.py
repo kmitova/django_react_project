@@ -21,7 +21,7 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
-        fields = ('age', 'profile_picture')
+        fields = ('age', 'profile_picture', 'bio')
 
 
 class CurrentUserDetailsSerializer(serializers.ModelSerializer):
@@ -30,3 +30,15 @@ class CurrentUserDetailsSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
         fields = ('id', 'username', 'email', 'date_joined', 'profile')
+
+
+class ProfileEditSerializer(serializers.ModelSerializer):
+    # profile = ProfileSerializer()
+    class Meta:
+        model = UserModel
+        fields = ('id', 'username', 'last_name', 'first_name', 'email')
+
+    def update(self, instance, validated_data):
+        print(validated_data)
+        super().update(instance=instance, validated_data=validated_data)
+        return instance

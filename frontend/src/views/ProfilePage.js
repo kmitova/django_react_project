@@ -48,6 +48,7 @@ const ProfilePage = () => {
                 <section>
                     <h1>Your profile:</h1>
                     <p>{profile.username}</p>
+                    <img src={profilePic} alt={profile.username} width='40px'/>
                     <p>{profile.email}</p>
                     <p>{age}</p>
                     <p>{profilePic}</p>

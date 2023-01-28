@@ -13,6 +13,7 @@ const ProfilePage = () => {
 
     const [profile, setProfile] = useState([])
     const [age, setAge] = useState([])
+    const [bio, setBio] = useState('')
     const [profilePic, setProfilePic] = useState([])
 
 
@@ -31,6 +32,7 @@ const ProfilePage = () => {
                 console.log(result.data)
                 setProfile(result.data)
                 if (result.data.profile) {
+                    setBio(result.data.profile.bio)
                     setAge(result.data.profile.age)
                     setProfilePic(result.data.profile.profile_picture)
                 }
@@ -48,12 +50,13 @@ const ProfilePage = () => {
                 <section>
                     <h1>Your profile:</h1>
                     <p>{profile.username}</p>
+                    <p>{profile.first_name}</p>
                     <img src={profilePic} alt={profile.username} width='40px'/>
                     <p>{profile.email}</p>
                     <p>{age}</p>
                     <p>{profilePic}</p>
                     {/* LINK TO PROFILE EDIT FORM   */}
-                    <Link to={`/edit-profile/${profile.id}`}>
+                    <Link to={`/edit-profile/${profile.id}`} state={{ profile }}>
                                  Edit your profile
                     </Link>
                 </section>

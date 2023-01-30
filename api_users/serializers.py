@@ -1,7 +1,7 @@
 from django.contrib.auth import get_user_model
 from rest_framework import serializers
 
-from api_accounts.models import Profile
+# from api_accounts.models import Profile
 
 UserModel = get_user_model()
 
@@ -20,22 +20,22 @@ class UserDetailsSerializer(serializers.ModelSerializer):
 
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Profile
+        model = UserModel
         fields = ('age', 'profile_picture', 'bio')
 
 
 class CurrentUserDetailsSerializer(serializers.ModelSerializer):
-    profile = ProfileSerializer()
+    # profile = ProfileSerializer()
 
     class Meta:
         model = UserModel
-        fields = ('id', 'username', 'email', 'date_joined', 'profile', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'date_joined', 'first_name', 'last_name', 'bio', 'profile_picture')
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserModel
-        fields = ('id', 'username', 'email', 'date_joined', 'profile', 'first_name', 'last_name')
+        fields = ('id', 'username', 'email', 'date_joined', 'first_name', 'last_name', 'bio', 'profile_picture')
 
 
 class ProfileEditSerializer(serializers.ModelSerializer):
@@ -44,10 +44,8 @@ class ProfileEditSerializer(serializers.ModelSerializer):
     # print(profile)
 
     class Meta:
-        model = Profile
-        fields = ('age', 'bio', 'user_id')
-
-        # fields = ('id', 'last_name', 'first_name', 'email', 'profile')
+        model = UserModel
+        fields = ('id', 'last_name', 'first_name', 'bio', 'username', 'profile_picture')
 
     # def update(self, instance, validated_data):
     #     data = validated_data.pop('profile', None)

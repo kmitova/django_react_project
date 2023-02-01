@@ -39,42 +39,8 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ProfileEditSerializer(serializers.ModelSerializer):
-    # user = UserSerializer()
-    # profile = serializers.DictField()
-    # print(profile)
 
     class Meta:
         model = UserModel
         fields = ('id', 'last_name', 'first_name', 'bio', 'username', 'profile_picture')
 
-    # def update(self, instance, validated_data):
-    #     data = validated_data.pop('profile', None)
-    #     print(type(data))
-    #     for (key, value) in validated_data.items():
-    #         setattr(instance, key, value)
-    #     if data is not None:
-    #         print(instance)
-    #         # user_instance = instance.user
-    #         for key, value in data.items():
-    #             print(key, value)
-    #             setattr(instance, key, value)
-    #         instance.save()
-    #
-    #     instance.save()
-    #     return instance
-    # def update(self, instance, validated_data):
-    #     profile_data = validated_data.pop('profile')
-    #     print(dict(profile_data))
-    #     print(validated_data)
-    #     instance = UserModel.objects.update(**validated_data)
-    #     for item_data in profile_data.items():
-    #         print(item_data)
-    #         Profile.objects.update(user=instance, **profile_data)
-    #     print(validated_data)
-    #     # super().update(instance=instance, validated_data=validated_data)
-    #     return instance
-    # def update(self, instance, validated_data):
-    #     instance = Profile.objects.update(**validated_data)
-    #
-    #     super().update(instance=instance, validated_data=validated_data)
-    #     return instance

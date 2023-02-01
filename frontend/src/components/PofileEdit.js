@@ -4,12 +4,13 @@ import AuthContext from "../context/AuthContext";
 import axios from "axios";
 import getAccessToken from "../utils/getToken";
 
-import {URL} from "../utils/url";
+import {URL as url} from "../utils/url";
 import {useParams} from "react-router-dom";
 
 const EditProfile = () => {
     const {user} = useContext(AuthContext);
     const {id} = useParams()
+
 
     const [profile, setProfile] = useState([])
     const [username, setUsername] = useState('')
@@ -22,7 +23,7 @@ const EditProfile = () => {
         useEffect(() => {
         const fetchData = async () => {
         let token = getAccessToken()
-        let result = await axios.get(`${URL}api_users/your_profile/${id}`,
+        let result = await axios.get(`${url}api_users/your_profile/${id}`,
         {
                 headers: {
                     'Accept': 'application/json',
@@ -58,7 +59,7 @@ const EditProfile = () => {
             profile_picture: profilePicture
         }
         console.log(data)
-        await axios.put(`${URL}api_users/edit_profile/${profile.id}/`,
+        await axios.put(`${url}api_users/edit_profile/${profile.id}/`,
             data, {
                 headers: {
                     'Accept': 'application/json',
@@ -106,11 +107,16 @@ const EditProfile = () => {
                             <textarea name="bio" id="" cols="30" rows="10" defaultValue={profile.bio} onChange={(e) => setBio(e.target.value)}></textarea>
                         </div>
                         <div>
+                           {/* currently unavailable */}
                            <label htmlFor="">Profile Picture:</label>
                             <input name='profile picture' type="file" id="myFile"
                                    // defaultValue={profile.profile_picture}
                                    onChange={(e) => {console.log(e.target.files[0])
-                                       setProfilePicture(e.target.files[0])}}/>
+
+                                       const file = URL.createObjectURL(e.target.files[0]);
+                                       console.log(file)
+                                        setProfilePicture(file);
+                                   }}/>
                         </div>
                         <button>Edit and Save Changes</button>
                     </form>

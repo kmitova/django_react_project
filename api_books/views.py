@@ -1,4 +1,3 @@
-
 from rest_framework import permissions
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView, \
@@ -17,20 +16,17 @@ class BooksListView(ListAPIView):
     queryset = Book.objects.all()
     serializer_class = BooksListSerializer
 
-    # def get_queryset(self):
-    #     return self.queryset.filter(user_id=self.request.user.id).distinct()
-
 
 class ReviewAPIView(ListAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
     )
-    # queryset = Review.objects.all()
-    # serializer_class = ReviewSerializer
-    # print(queryset)
-    #
-    # def get_queryset(self):
-    #     return self.queryset.filter(user_id=self.request.user.id).distinct()
+    queryset = Review.objects.all()
+    serializer_class = ReviewSerializer
+    print(queryset)
+
+    def get_queryset(self):
+        return self.queryset.filter(user_id=self.request.user.id).distinct()
 
 
 class BookAddAPIView(ListCreateAPIView):

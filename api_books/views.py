@@ -3,7 +3,7 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView, \
     RetrieveDestroyAPIView
 
-from api_books.models import Book, Category, Review
+from api_books.models import Book, Category, Review, IsRead
 from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer, \
     BookUpdateStatusSerializer, BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
     BookDeleteReviewSerializer
@@ -52,18 +52,42 @@ class BookAddAPIView(ListCreateAPIView):
         return queryset
 
 
-class BookStatusUpdateAPIView(RetrieveUpdateAPIView):
-    queryset = Book.objects.all()
+class BookStatusView(ListAPIView):
+    # queryset = IsRead.objects.all()
+    serializer_class = BookUpdateStatusSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    lookup_url_kwarg = "pk"
+    # print(queryset)
+    # for item in queryset:
+    #     print(item.user)
+
+    def get_queryset(self):
+        print(self.request)
+        user = self.request.user
+        print(user)
+        # book = self.request.GET['pk']
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        # print(book)
+        queryset = IsRead.objects.filter(user=user, book=pk)
+        return queryset
+        # return self.queryset.filter(is_read__user_id=self.request.user.id).distinct()
+
+
+class BookStatusUpdateAPIView(CreateAPIView):
+    # queryset = Book.objects.all()
+    queryset = IsRead.objects.all()
     serializer_class = BookUpdateStatusSerializer
     permission_classes = (
         permissions.IsAuthenticated,
     )
 
-    def get_object(self):
-        book = super().get_object()
-        if book.user != self.request.user:
-            raise PermissionDenied
-        return book
+    # def get_object(self):
+    #     book = super().get_object()
+    #     if book.user != self.request.user:
+    #         raise PermissionDenied
+    #     return book
 
 
 class ReviewDeleteAPIView(RetrieveDestroyAPIView):

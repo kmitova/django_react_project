@@ -121,6 +121,24 @@ class Review(models.Model):
         ordering = ('-updated_at',)
 
 
+class IsRead(models.Model):
+    DEFAULT_STATE = False
+
+    is_read = models.BooleanField(
+        default=DEFAULT_STATE,
+        null=False,
+        blank=False,
+    )
+    book = models.ForeignKey(
+        Book, on_delete=models.RESTRICT, blank=False, null=False
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
+
+
 class Comment(models.Model):
     MAX_TEXT_LENGTH = 300
     text = models.CharField(

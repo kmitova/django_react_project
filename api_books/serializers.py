@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api_books.models import Book, Category, Review, IsRead
+from api_books.models import Book, Category, Review, IsRead, WantToRead
 
 
 class BooksListSerializer(serializers.ModelSerializer):
@@ -16,18 +16,23 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 
 class BookUpdateStatusSerializer(serializers.ModelSerializer):
-    # class Meta:
-    #     model = Book
-    #     fields = 'is_read',
     class Meta:
         model = IsRead
         fields = ('is_read', 'user', 'book')
 
-    # def update(self, instance, validated_data):
-    #     if self.partial and validated_data.get('is_read') == False:
-    #         validated_data['is_read'] = False
-    #     super().update(instance=instance, validated_data=validated_data)
-    #     return instance
+
+class WantToReadBook(serializers.ModelSerializer):
+    class Meta:
+        model = WantToRead
+        fields = ('id', 'want_to_read', 'user', 'book')
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        super().update(instance=instance, validated_data=validated_data)
+        return instance
 
 
 class BookDetailsSerializer(serializers.ModelSerializer):

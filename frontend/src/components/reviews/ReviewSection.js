@@ -5,6 +5,8 @@ import axios from "axios";
 import {URL} from "../../utils/url";
 import EditDeleteReview from "./EditDeleteReview";
 
+
+// IMPORTANT: PAGE SHOWS CORRECT REVIEW AFTER REFRESHING
 const ReviewSection = (props) => {
     const { book } = props;
     const [review, setReview] = useState('')
@@ -23,9 +25,10 @@ const ReviewSection = (props) => {
             if (result.status === 200) {
                 console.log(result.data)
                     for (let i of result.data) {
+                        console.log(i.book, book.id)
                         if (i.book === book.id) {
                             setReview(i)
-
+                            break
                         }
                     }
                 }

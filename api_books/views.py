@@ -3,10 +3,10 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView, \
     RetrieveDestroyAPIView
 
-from api_books.models import Book, Category, Review, IsRead
+from api_books.models import Book, Category, Review, IsRead, WantToRead
 from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer, \
     BookUpdateStatusSerializer, BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
-    BookDeleteReviewSerializer
+    BookDeleteReviewSerializer, WantToReadBook
 
 
 class BooksListView(ListAPIView):
@@ -88,6 +88,46 @@ class BookStatusUpdateAPIView(CreateAPIView):
     #     if book.user != self.request.user:
     #         raise PermissionDenied
     #     return book
+
+
+class WantToReadAddBookAPIView(CreateAPIView):
+    queryset = WantToRead.objects.all()
+    serializer_class = WantToReadBook
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+
+class WantToReadViewAPIView(ListAPIView):
+    queryset = WantToRead.objects.all()
+    serializer_class = WantToReadBook
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_queryset(self):
+        print(self.request)
+        user = self.request.user
+        print(user)
+        # book = self.request.GET['pk']
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        # print(book)
+        queryset = WantToRead.objects.filter(user=user, want_to_read=True)
+        return queryset
+
+
+class EditWantToReadViewAPIView(RetrieveUpdateAPIView):
+    queryset = WantToRead.objects.all()
+    serializer_class = WantToReadBook
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_object(self):
+        object = super().get_object()
+        if object.user != self.request.user:
+            raise PermissionDenied
+        return object
 
 
 class ReviewDeleteAPIView(RetrieveDestroyAPIView):

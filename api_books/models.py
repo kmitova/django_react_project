@@ -117,14 +117,32 @@ class Review(models.Model):
     #
     #     return super().save(*args, **kwargs)
 
-    class Meta:
-        ordering = ('-updated_at',)
+    # class Meta:
+    #     ordering = ('-updated_at',)
 
 
 class IsRead(models.Model):
     DEFAULT_STATE = False
 
     is_read = models.BooleanField(
+        default=DEFAULT_STATE,
+        null=False,
+        blank=False,
+    )
+    book = models.ForeignKey(
+        Book, on_delete=models.RESTRICT, blank=False, null=False
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
+
+
+class WantToRead(models.Model):
+    DEFAULT_STATE = False
+
+    want_to_read = models.BooleanField(
         default=DEFAULT_STATE,
         null=False,
         blank=False,

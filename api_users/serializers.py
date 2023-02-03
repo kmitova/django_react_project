@@ -42,5 +42,5 @@ class ProfileEditSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserModel
-        fields = ('id', 'last_name', 'first_name', 'bio', 'username', 'profile_picture')
+        fields = ('id', 'last_name', 'first_name', 'bio', 'username', 'profile_picture', 'email')
 

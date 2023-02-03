@@ -37,6 +37,7 @@ const EditProfile = () => {
                 setUsername(result.data.username)
                 setFirstName(result.data.first_name)
                 setLastName(result.data.last_name)
+                setEmail(result.data.email)
                 setBio(result.data.bio)
                 setProfilePicture(result.data.profile_picture)
                 console.log(result.data.profile_picture)
@@ -56,7 +57,7 @@ const EditProfile = () => {
             last_name: lastName,
             email: email,
             bio: bio,
-            profile_picture: profilePicture
+            // profile_picture: profilePicture
         }
         console.log(data)
         await axios.put(`${url}api_users/edit_profile/${profile.id}/`,

@@ -18,7 +18,6 @@ const BookDetails = () => {
     const [changeWantToRead, setChangeWantToRead] = useState(false)
 
 
-
     useEffect(() => {
         const fetchBook = async () => {
             let token = getAccessToken();
@@ -31,7 +30,7 @@ const BookDetails = () => {
             });
             if (result.status === 200) {
                 console.log(result.data)
-                setBook(result.data)
+                setBook(prevState => result.data)
             }
         };
         fetchBook()
@@ -50,9 +49,14 @@ const BookDetails = () => {
             });
             if (result.status === 200) {
                 console.log(result.data)
-                let relevantData = result.data[result.data.length-1]
-                console.log(relevantData)
-                setBooksIsRead(relevantData.is_read)
+                if (result.data.length > 0) {
+                    let relevantData = result.data[result.data.length-1]
+                    console.log(relevantData)
+                    setBooksIsRead(prevState => relevantData.is_read)
+                }
+                // let relevantData = result.data[result.data.length-1]
+                // console.log(relevantData)
+                // setBooksIsRead(prevState => relevantData.is_read)
                 // setBooksIsRead(result.data)
                 // setBookIsRead(result.data)
             }
@@ -78,9 +82,9 @@ const BookDetails = () => {
                     console.log(item)
                     console.log(book)
                     console.log(item.book, book.id)
-                    if (item.book === book.id) {
+                    if (item.book.id === book.id) {
                         setWantToRead(item.want_to_read)
-                        setWantToReadObject(item)
+                        setWantToReadObject(prevState => item)
                         console.log(item)
 
                         break
@@ -91,7 +95,7 @@ const BookDetails = () => {
         };
         fetchWantToReadStatus()
             .catch(console.error);
-    },  [id]);
+    },  [book]);
 
 
     const changeStatus = async (e, book) => {
@@ -132,16 +136,16 @@ const BookDetails = () => {
         console.log(data)
         console.log(wantToReadObject)
         if (wantToReadObject !== null) {
-            await axios.put(`${url}api_books/edit_want_to_read/${wantToReadObject.id}/`,
-            data, {
+            await axios.delete(`${url}api_books/edit_want_to_read/${wantToReadObject.id}/`,
+             {
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`
-                }
+                } , data
             })
             .then((result) => {
-                console.log('success, put request')
+                console.log('success, delete request')
                 console.log(result.data);
             })
             .catch((error) => {
@@ -193,4 +197,6 @@ const BookDetails = () => {
     )
 }
 
+
 export default BookDetails;
+// comment

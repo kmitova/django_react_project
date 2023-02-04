@@ -11,6 +11,8 @@ urlpatterns = (
     path('view_book_status/<int:pk>/', BookStatusView.as_view(), name='view book status'),
     path('want_to_read/', WantToReadAddBookAPIView.as_view(), name='want to read add'),
     path('view_want_to_read/', WantToReadViewAPIView.as_view(), name='view want to read'),
+    path('view_want_to_read/<int:pk>/', WantToReadViewAPIView.as_view(), name='view want to read'),
+
     path('edit_want_to_read/<int:pk>/', EditWantToReadViewAPIView.as_view(), name='edit want to read'),
 
     path('book/<int:pk>/', BookDetailsAPIView.as_view(), name='details book'),

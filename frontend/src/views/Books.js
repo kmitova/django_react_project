@@ -12,6 +12,7 @@ const Books = () => {
     const {user} = useContext(AuthContext);
     const [books, setBooks] = useState([])
     const [wantToRead, setWantToRead] = useState([])
+    let bookIds = []
 
 
     useEffect(() => {
@@ -27,7 +28,7 @@ const Books = () => {
             if (result.status === 200) {
                 const books = result.data
                 console.log(books)
-                setBooks(books)
+                setBooks(prevState => books)
             }
         }
         fetchData()
@@ -45,9 +46,21 @@ const Books = () => {
                 }
             });
             if (result.status === 200) {
-                // const books = result.data
                 console.log(result.data)
-                setWantToRead(result.data)
+
+                setWantToRead(prevState => result.data)
+                let ids = result.data.map((item) => item.book)
+                console.log(ids)
+                bookIds = ids
+                console.log(books)
+                // for (let book of books) {
+                //     console.log(book)
+                //     console.log(book.id, ids)
+                //     if (ids.includes(book.id)) {
+                //         setWantToRead(...wantToRead, book)
+                //     }
+                // }
+                // bookIds.push(result.data.book)
             }
         }
         fetchWantToRead()
@@ -63,11 +76,9 @@ const Books = () => {
                     <div>
                         <h1>You Want to Read:</h1>
                         <ul>
-                            {wantToRead.map((item) => <li key={item.id}>{item.book} <Link to={`/book/${item.book}`}>
+                            {wantToRead.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link to={`/book/${item.book.id}`}>
                                  to book details
                              </Link></li>)}
-                            {/*<li>Book 1</li>*/}
-                            {/*<li>Book 2</li>*/}
                         </ul>
                     </div>
 

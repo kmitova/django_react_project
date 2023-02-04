@@ -21,7 +21,28 @@ class BookUpdateStatusSerializer(serializers.ModelSerializer):
         fields = ('is_read', 'user', 'book')
 
 
+class BookDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ('id', 'title', 'author', 'category')
+
+
 class WantToReadBook(serializers.ModelSerializer):
+    book = BookDetailsSerializer(read_only=True)
+
+    class Meta:
+        model = WantToRead
+        fields = ('id', 'want_to_read', 'user', 'book')
+
+    # def create(self, validated_data):
+    #     validated_data['user'] = self.context['request'].user
+    #     return super().create(validated_data)
+    #
+    # def update(self, instance, validated_data):
+    #     super().update(instance=instance, validated_data=validated_data)
+    #     return instance
+
+class AddWantToReadBookSerializer(serializers.ModelSerializer):
     class Meta:
         model = WantToRead
         fields = ('id', 'want_to_read', 'user', 'book')
@@ -33,13 +54,6 @@ class WantToReadBook(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         super().update(instance=instance, validated_data=validated_data)
         return instance
-
-
-class BookDetailsSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Book
-        fields = ('id', 'title', 'author', 'category')
-
 
 class BookAddReviewSerializer(serializers.ModelSerializer):
     class Meta:

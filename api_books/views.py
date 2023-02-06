@@ -3,10 +3,11 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView, \
     RetrieveDestroyAPIView
 
-from api_books.models import Book, Category, Review, IsRead, WantToRead
+from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading
 from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer, \
     BookUpdateStatusSerializer, BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
-    BookDeleteReviewSerializer, WantToReadBook, AddWantToReadBookSerializer
+    BookDeleteReviewSerializer, WantToReadBook, AddWantToReadBookSerializer, AddToCurrentlyReadingSerializer, \
+    CurrentlyReadingSerializer
 
 
 class BooksListView(ListAPIView):
@@ -53,41 +54,60 @@ class BookAddAPIView(ListCreateAPIView):
 
 
 class BookStatusView(ListAPIView):
-    # queryset = IsRead.objects.all()
     serializer_class = BookUpdateStatusSerializer
     permission_classes = (
         permissions.IsAuthenticated,
     )
     lookup_url_kwarg = "pk"
-    # print(queryset)
-    # for item in queryset:
-    #     print(item.user)
 
     def get_queryset(self):
-        print(self.request)
         user = self.request.user
-        print(user)
-        # book = self.request.GET['pk']
         pk = self.kwargs.get(self.lookup_url_kwarg)
-        # print(book)
         queryset = IsRead.objects.filter(user=user, book=pk)
         return queryset
-        # return self.queryset.filter(is_read__user_id=self.request.user.id).distinct()
 
 
 class BookStatusUpdateAPIView(CreateAPIView):
-    # queryset = Book.objects.all()
     queryset = IsRead.objects.all()
     serializer_class = BookUpdateStatusSerializer
     permission_classes = (
         permissions.IsAuthenticated,
     )
 
-    # def get_object(self):
-    #     book = super().get_object()
-    #     if book.user != self.request.user:
-    #         raise PermissionDenied
-    #     return book
+
+class CurrentlyReadingAddAPIView(CreateAPIView):
+    queryset = CurrentlyReading.objects.all()
+    serializer_class = AddToCurrentlyReadingSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+
+class CurrentlyReadingAPIView(ListAPIView):
+    queryset = CurrentlyReading.objects.all()
+    serializer_class = CurrentlyReadingSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_queryset(self):
+        user = self.request.user
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        queryset = CurrentlyReading.objects.filter(user=user, currently_reading=True)
+        return queryset
+
+class RemoveFromCurrentlyReadingAPIView(RetrieveDestroyAPIView):
+    queryset = CurrentlyReading.objects.all()
+    serializer_class = AddToCurrentlyReadingSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_object(self):
+        object = super().get_object()
+        if object.user != self.request.user:
+            raise PermissionDenied
+        return object
 
 
 class WantToReadAddBookAPIView(CreateAPIView):
@@ -106,17 +126,13 @@ class WantToReadViewAPIView(ListAPIView):
     )
 
     def get_queryset(self):
-        print(self.request)
         user = self.request.user
-        print(user)
-        # book = self.request.GET['pk']
         pk = self.kwargs.get(self.lookup_url_kwarg)
-        # print(book)
         queryset = WantToRead.objects.filter(user=user, want_to_read=True)
         return queryset
 
 
-class EditWantToReadViewAPIView(RetrieveDestroyAPIView):
+class RemoveFromWantToReadViewAPIView(RetrieveDestroyAPIView):
     queryset = WantToRead.objects.all()
     serializer_class = AddWantToReadBookSerializer
     permission_classes = (
@@ -172,8 +188,6 @@ class BookDetailsAPIView(RetrieveUpdateAPIView):
 
     def get_object(self):
         book = super().get_object()
-        # if book.user != self.request.user:
-        #     raise PermissionDenied
         return book
 
 

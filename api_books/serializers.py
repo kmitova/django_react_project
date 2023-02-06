@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api_books.models import Book, Category, Review, IsRead, WantToRead
+from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading
 
 
 class BooksListSerializer(serializers.ModelSerializer):
@@ -27,6 +27,28 @@ class BookDetailsSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'author', 'category')
 
 
+class CurrentlyReadingSerializer(serializers.ModelSerializer):
+    book = BookDetailsSerializer(read_only=True)
+
+    class Meta:
+        model = CurrentlyReading
+        fields = ('id', 'currently_reading', 'user', 'book')
+
+
+class AddToCurrentlyReadingSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CurrentlyReading
+        fields = ('id', 'currently_reading', 'user', 'book')
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        super().update(instance=instance, validated_data=validated_data)
+        return instance
+
+
 class WantToReadBook(serializers.ModelSerializer):
     book = BookDetailsSerializer(read_only=True)
 
@@ -34,13 +56,6 @@ class WantToReadBook(serializers.ModelSerializer):
         model = WantToRead
         fields = ('id', 'want_to_read', 'user', 'book')
 
-    # def create(self, validated_data):
-    #     validated_data['user'] = self.context['request'].user
-    #     return super().create(validated_data)
-    #
-    # def update(self, instance, validated_data):
-    #     super().update(instance=instance, validated_data=validated_data)
-    #     return instance
 
 class AddWantToReadBookSerializer(serializers.ModelSerializer):
     class Meta:
@@ -54,6 +69,7 @@ class AddWantToReadBookSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         super().update(instance=instance, validated_data=validated_data)
         return instance
+
 
 class BookAddReviewSerializer(serializers.ModelSerializer):
     class Meta:

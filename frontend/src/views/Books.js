@@ -12,7 +12,7 @@ const Books = () => {
     const {user} = useContext(AuthContext);
     const [books, setBooks] = useState([])
     const [wantToRead, setWantToRead] = useState([])
-    let bookIds = []
+    const [currentlyReading, setCurrentlyReading] = useState([])
 
 
     useEffect(() => {
@@ -49,10 +49,10 @@ const Books = () => {
                 console.log(result.data)
 
                 setWantToRead(prevState => result.data)
-                let ids = result.data.map((item) => item.book)
-                console.log(ids)
-                bookIds = ids
-                console.log(books)
+                // let ids = result.data.map((item) => item.book)
+                // console.log(ids)
+                // bookIds = ids
+                // console.log(books)
                 // for (let book of books) {
                 //     console.log(book)
                 //     console.log(book.id, ids)
@@ -64,6 +64,26 @@ const Books = () => {
             }
         }
         fetchWantToRead()
+            .catch(console.error)
+    }, [])
+
+    useEffect(() => {
+        const fetchCurrentlyReading = async () => {
+            let token = getAccessToken();
+            let result = await axios.get(`${URL}api_books/view_currently_reading/`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer  ${token}`
+                }
+            });
+            if (result.status === 200) {
+                console.log(result.data)
+
+                setCurrentlyReading(prevState => result.data)
+            }
+        }
+        fetchCurrentlyReading()
             .catch(console.error)
     }, [])
 
@@ -81,9 +101,14 @@ const Books = () => {
                              </Link></li>)}
                         </ul>
                     </div>
-
-                    {/*<SearchBook books={books}/>*/}
-                    {/*<AddBook/>*/}
+                    <div>
+                        <h1>You are currently reading:</h1>
+                        <ul>
+                            {currentlyReading.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link to={`/book/${item.book.id}`}>
+                                 to book details
+                             </Link></li>)}
+                        </ul>
+                    </div>
                 </section>
             }
         </section>

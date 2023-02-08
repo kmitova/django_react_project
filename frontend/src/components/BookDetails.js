@@ -2,13 +2,10 @@ import React, {useContext, useEffect, useState} from 'react';
 import {useParams} from "react-router-dom";
 import getAccessToken from "../utils/getToken";
 import axios from "axios";
-import {URL as url, URL} from "../utils/url";
+import {URL} from "../utils/url";
 import ReviewSection from "./reviews/ReviewSection";
 import AuthContext from "../context/AuthContext";
-import WantToRead from "./WantToRead";
-import ChangeReadStatus from "./ChangeReadStatus";
-import CurrentlyReading from "./CurrentlyReading";
-
+import BookStatus from "./BookStatus";
 
 
 const BookDetails = () => {
@@ -41,9 +38,9 @@ const BookDetails = () => {
             <h1>Book details page</h1>
             <h2>{book.title}</h2>
             <h3>{book.author}</h3>
-            <CurrentlyReading book={book} user={user}/>
-            <WantToRead book={book} user={user}/>
-            <ChangeReadStatus book={book} user={user} id={id}/>
+
+            <BookStatus book={book} user={user} id={id}/>
+
             <ReviewSection book={book}/>
 
 

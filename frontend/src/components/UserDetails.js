@@ -3,6 +3,7 @@ import {useParams} from "react-router-dom";
 import getAccessToken from "../utils/getToken";
 import axios from "axios";
 import {URL} from "../utils/url";
+import UserBookInfo from "./UserBookInfo";
 
 
 const UserDetails = () => {
@@ -37,6 +38,7 @@ const UserDetails = () => {
             <h1>User details page</h1>
             <h2>{user.username}</h2>
             <h4>{user.email}</h4>
+            <UserBookInfo user={user}/>
         </div>
 
     )

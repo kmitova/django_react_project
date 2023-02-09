@@ -31,8 +31,6 @@ const UserDetails = () => {
             .catch(console.error);
     }, [id]);
 
-
-
     return (
         <div>
             <h1>User details page</h1>
@@ -40,7 +38,6 @@ const UserDetails = () => {
             <h4>{user.email}</h4>
             <UserBookInfo user={user}/>
         </div>
-
     )
 }
 

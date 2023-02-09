@@ -67,6 +67,16 @@ class BookStatusView(ListAPIView):
         return queryset
 
 
+class AllReadBooksStatusView(ListAPIView):
+    queryset = IsRead.objects.all()
+    serializer_class = BookUpdateStatusSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+
+
+
 class BookStatusUpdateAPIView(CreateAPIView):
     queryset = IsRead.objects.all()
     serializer_class = BookUpdateStatusSerializer
@@ -90,11 +100,12 @@ class CurrentlyReadingAPIView(ListAPIView):
         permissions.IsAuthenticated,
     )
 
-    def get_queryset(self):
-        user = self.request.user
-        pk = self.kwargs.get(self.lookup_url_kwarg)
-        queryset = CurrentlyReading.objects.filter(user=user, currently_reading=True)
-        return queryset
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     pk = self.kwargs.get(self.lookup_url_kwarg)
+    #     queryset = CurrentlyReading.objects.filter(user=user, currently_reading=True)
+    #     return queryset
+
 
 class RemoveFromCurrentlyReadingAPIView(RetrieveDestroyAPIView):
     queryset = CurrentlyReading.objects.all()
@@ -125,11 +136,11 @@ class WantToReadViewAPIView(ListAPIView):
         permissions.IsAuthenticated,
     )
 
-    def get_queryset(self):
-        user = self.request.user
-        pk = self.kwargs.get(self.lookup_url_kwarg)
-        queryset = WantToRead.objects.filter(user=user, want_to_read=True)
-        return queryset
+    # def get_queryset(self):
+    #     user = self.request.user
+    #     pk = self.kwargs.get(self.lookup_url_kwarg)
+    #     queryset = WantToRead.objects.filter(user=user, want_to_read=True)
+    #     return queryset
 
 
 class RemoveFromWantToReadViewAPIView(RetrieveDestroyAPIView):

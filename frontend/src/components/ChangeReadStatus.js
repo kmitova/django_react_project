@@ -5,6 +5,8 @@ import {URL} from "../utils/url";
 
 const ChangeReadStatus = (props) => {
     const {book, user, id} = props;
+    console.log(book)
+    const bookId = book.id
 
     const [bookIsRead, setBooksIsRead] = useState(false)
 
@@ -32,15 +34,15 @@ const ChangeReadStatus = (props) => {
 
     const changeStatus = async (e, book) => {
         e.preventDefault();
-        setBooksIsRead(e.target.checked)
+        // setBooksIsRead(e.target.checked)
         let token = getAccessToken()
         let data = {
-            book: book.id,
+            book: bookId,
             user: user.user_id,
             is_read: bookIsRead
         }
         console.log(data)
-        await axios.post(`${URL}api_books/change_book_status/${book.id}/`,
+        await axios.post(`${URL}api_books/change_book_status/${bookId}/`,
             data, {
                 headers: {
                     'Accept': 'application/json',
@@ -56,14 +58,23 @@ const ChangeReadStatus = (props) => {
             })
     }
     return (
-        <form action="">
-            <label htmlFor="">Book is read</label>
-            {bookIsRead ?
-                <input type="checkbox" name="is_read" checked
-                       onChange={(e) => changeStatus(e, book)}/> :
-                <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, book)}/>}
-            {/*  add submit button  */}
+        <form action="" onSubmit={changeStatus}>
+            <button onClick={()=> setBooksIsRead(!bookIsRead)}>
+                {bookIsRead
+                    ?
+                    "Remove from read"
+                    :
+                    "Finish reading"}
+            </button>
         </form>
+        // <form action="">
+        //     <label htmlFor="">Book is read</label>
+        //     {bookIsRead ?
+        //         <input type="checkbox" name="is_read" checked
+        //                onChange={(e) => changeStatus(e, book)}/> :
+        //         <input type="checkbox" name="is_read" onChange={(e) => changeStatus(e, book)}/>}
+        //     {/*  add submit button  */}
+        // </form>
     )
 }
 

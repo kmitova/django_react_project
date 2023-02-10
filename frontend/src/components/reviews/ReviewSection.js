@@ -10,6 +10,7 @@ import EditDeleteReview from "./EditDeleteReview";
 const ReviewSection = (props) => {
     const { book } = props;
     const [review, setReview] = useState('')
+    const [reviews, setReviews] = useState([])
 
 
     useEffect(() => {
@@ -41,6 +42,34 @@ const ReviewSection = (props) => {
             .catch(console.error)
     }, [book.id])
 
+    useEffect(() => {
+        const fetchOtherReviews = async () => {
+            let token = getAccessToken();
+            let result = await axios.get(`${URL}api_books/show_other_reviews/`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer  ${token}`
+                }
+            })
+            if (result.status === 200) {
+                console.log(result.data)
+                    for (let i of result.data) {
+                        console.log(i.book, book.id)
+                        if (i.book === book.id) {
+                            setReviews(prevState => [...prevState, i])
+                        }
+                        console.log(reviews)
+                    }
+                }
+                else {
+                    console.log('no review of this book from this user yet')
+                }
+        }
+        fetchOtherReviews()
+        .catch(console.error)
+    }, [book.id])
+
 
 
     const handleEditChange = (e) => {
@@ -60,6 +89,8 @@ const ReviewSection = (props) => {
                     <h2>Your review of {book.title}</h2>
                     <EditDeleteReview book={book} review={review} handleEditChange={handleEditChange}/>
                 </div>}
+            {reviews.length}
+            {reviews.map((review) => <li key={review.id}>{review.content} by {review.user.username}</li>)}
         </div>
     )
 }

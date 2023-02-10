@@ -5,9 +5,9 @@ from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpda
 
 from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading
 from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer, \
-     BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
+    BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
     BookDeleteReviewSerializer, WantToReadBook, AddWantToReadBookSerializer, AddToCurrentlyReadingSerializer, \
-    CurrentlyReadingSerializer, ChangeIsReadSerializer, BookIsReadSerializer
+    CurrentlyReadingSerializer, ChangeIsReadSerializer, BookIsReadSerializer, BookShowReviewSerializer
 
 
 class BooksListView(ListAPIView):
@@ -181,6 +181,18 @@ class ReviewDeleteAPIView(RetrieveDestroyAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
     )
+
+
+class AllReviewsOfThisBook(ListAPIView):
+    queryset = Review.objects.all()
+    serializer_class = BookShowReviewSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_queryset(self):
+        return Review.objects.exclude(user=self.request.user.id)
+
 
 
 class ReviewUpdateAPIView(RetrieveUpdateAPIView):

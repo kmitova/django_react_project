@@ -9,6 +9,8 @@ const ChangeReadStatus = (props) => {
     const bookId = book.id
 
     const [bookIsRead, setBooksIsRead] = useState(false)
+    const [isReadObject, setIsReadObject] = useState(null)
+    const [changeIsRead, setChangeIsRead] = useState(false)
 
     useEffect(() => {
         const fetchBookStatus = async () => {
@@ -25,6 +27,7 @@ const ChangeReadStatus = (props) => {
                     let relevantData = result.data[result.data.length - 1]
                     console.log(relevantData)
                     setBooksIsRead(prevState => relevantData.is_read)
+                    setIsReadObject(prevState => relevantData)
                 }
             }
         };
@@ -42,7 +45,25 @@ const ChangeReadStatus = (props) => {
             is_read: bookIsRead
         }
         console.log(data)
-        await axios.post(`${URL}api_books/change_book_status/${bookId}/`,
+        if (isReadObject !== null) {
+            await axios.delete(`${URL}api_books/edit_book_status/${isReadObject.id}/`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }, data
+            })
+            .then((result) => {
+                setBooksIsRead(false)
+                console.log('success, delete request')
+                console.log(result.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+        } else {
+           await axios.post(`${URL}api_books/change_book_status/`,
             data, {
                 headers: {
                     'Accept': 'application/json',
@@ -56,6 +77,8 @@ const ChangeReadStatus = (props) => {
             .catch((error) => {
                 console.log(error);
             })
+        }
+
     }
     return (
         <form action="" onSubmit={changeStatus}>

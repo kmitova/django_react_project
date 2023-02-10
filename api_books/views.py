@@ -5,9 +5,9 @@ from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpda
 
 from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading
 from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer, \
-    BookUpdateStatusSerializer, BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
+     BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
     BookDeleteReviewSerializer, WantToReadBook, AddWantToReadBookSerializer, AddToCurrentlyReadingSerializer, \
-    CurrentlyReadingSerializer
+    CurrentlyReadingSerializer, ChangeIsReadSerializer, BookIsReadSerializer
 
 
 class BooksListView(ListAPIView):
@@ -54,7 +54,7 @@ class BookAddAPIView(ListCreateAPIView):
 
 
 class BookStatusView(ListAPIView):
-    serializer_class = BookUpdateStatusSerializer
+    serializer_class = BookIsReadSerializer
     permission_classes = (
         permissions.IsAuthenticated,
     )
@@ -69,20 +69,38 @@ class BookStatusView(ListAPIView):
 
 class AllReadBooksStatusView(ListAPIView):
     queryset = IsRead.objects.all()
-    serializer_class = BookUpdateStatusSerializer
+    serializer_class = BookIsReadSerializer
     permission_classes = (
         permissions.IsAuthenticated,
     )
-
-
 
 
 class BookStatusUpdateAPIView(CreateAPIView):
     queryset = IsRead.objects.all()
-    serializer_class = BookUpdateStatusSerializer
+    serializer_class = ChangeIsReadSerializer
     permission_classes = (
         permissions.IsAuthenticated,
     )
+
+class IsReadAPIView(ListAPIView):
+    queryset = IsRead.objects.all()
+    serializer_class = BookIsReadSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+class RemoveIsReadAPIView(RetrieveDestroyAPIView):
+    queryset = IsRead.objects.all()
+    serializer_class = ChangeIsReadSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_object(self):
+        object = super().get_object()
+        if object.user != self.request.user:
+            raise PermissionDenied
+        return object
 
 
 class CurrentlyReadingAddAPIView(CreateAPIView):

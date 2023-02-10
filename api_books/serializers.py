@@ -9,22 +9,37 @@ class BooksListSerializer(serializers.ModelSerializer):
         fields = ('id', 'title', 'author',)
 
 
+class BookDetailsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Book
+        fields = ('id', 'title', 'author', 'category')
+
 class ReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
         fields = ('id', 'content', 'rating', 'book')
 
 
-class BookUpdateStatusSerializer(serializers.ModelSerializer):
+class ChangeIsReadSerializer(serializers.ModelSerializer):
     class Meta:
         model = IsRead
-        fields = ('is_read', 'user', 'book')
+        fields = ('id', 'is_read', 'user', 'book')
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        super().update(instance=instance, validated_data=validated_data)
+        return instance
 
 
-class BookDetailsSerializer(serializers.ModelSerializer):
+class BookIsReadSerializer(serializers.ModelSerializer):
+    book = BookDetailsSerializer(read_only=True)
     class Meta:
-        model = Book
-        fields = ('id', 'title', 'author', 'category')
+        model = IsRead
+        fields = ('id', 'is_read', 'user', 'book')
+
 
 
 class CurrentlyReadingSerializer(serializers.ModelSerializer):

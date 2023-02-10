@@ -114,7 +114,8 @@ const UserBookInfo = (props) => {
                 console.log(result.data)
                 const filtered = result.data.filter(item => {
                     console.log(item.user, userId)
-                    return item.user === userId;
+
+                    return item.user === userId && item.is_read === true
                 })
                 console.log(filtered)
                 setHasRead(prevState => filtered)

@@ -4,6 +4,7 @@ import getAccessToken from "../../utils/getToken";
 import axios from "axios";
 import {URL} from "../../utils/url";
 import EditDeleteReview from "./EditDeleteReview";
+import ShowOtherReviews from "./ShowOtherReviews";
 
 
 // IMPORTANT: PAGE SHOWS CORRECT REVIEW AFTER REFRESHING
@@ -89,8 +90,9 @@ const ReviewSection = (props) => {
                     <h2>Your review of {book.title}</h2>
                     <EditDeleteReview book={book} review={review} handleEditChange={handleEditChange}/>
                 </div>}
-            {reviews.length}
-            {reviews.map((review) => <li key={review.id}>{review.content} by {review.user.username}</li>)}
+            <ShowOtherReviews book={book} reviews={reviews}/>
+
+
         </div>
     )
 }

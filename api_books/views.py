@@ -194,6 +194,22 @@ class AllReviewsOfThisBook(ListAPIView):
         return Review.objects.exclude(user=self.request.user.id)
 
 
+class AllReviewsByUserAPIView(ListAPIView):
+    queryset = Review.objects.all()
+    serializer_class = BookShowReviewSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    lookup_url_kwarg = "pk"
+
+    def get_queryset(self):
+        user = self.request.user
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        queryset = Review.objects.filter(user=pk)
+        return queryset
+
+
 
 class ReviewUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Review.objects.all()

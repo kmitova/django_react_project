@@ -99,7 +99,7 @@ class BookAddReviewSerializer(serializers.ModelSerializer):
 
 
 class BookShowReviewSerializer(serializers.ModelSerializer):
-    book = BookDetailsSerializer
+    book = BookDetailsSerializer(read_only=True)
     user = UserSerializer(read_only=True)
 
     class Meta:

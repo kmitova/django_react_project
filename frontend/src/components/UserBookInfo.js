@@ -6,30 +6,26 @@ import {Link} from "react-router-dom";
 
 const UserBookInfo = (props) => {
     const {user} = props;
-
     console.log(user)
-
-    // let userId;
     const [userId, setUserId] = useState(null)
     const [person, setPerson] = useState(null)
 
 
     useEffect(() => {
         if (user.hasOwnProperty('id')) {
-        // userId = user.id
             setUserId(user.id);
-        setPerson(prev=>user.username)
-    } else {
-        // userId = user.user_id
+            setPerson(prev => user.username)
+        } else {
             setUserId(user.user_id);
-        setPerson(prev=>"You")
-    }
+            setPerson(prev => "You")
+        }
     }, [person, user, userId])
 
     const [books, setBooks] = useState([])
     const [wantToRead, setWantToRead] = useState([])
     const [currentlyReading, setCurrentlyReading] = useState([])
     const [hasRead, setHasRead] = useState([])
+    const [reviews, setReviews] = useState([])
 
 
     useEffect(() => {
@@ -125,33 +121,64 @@ const UserBookInfo = (props) => {
             .catch(console.error)
     }, [userId]);
 
+    useEffect(() => {
+        const fetchReviews = async () => {
+            let token = getAccessToken();
+            let result = await axios.get(`${URL}api_books/show_reviews_of_user/${userId}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer  ${token}`
+                }
+            });
+            if (result.status === 200) {
+                console.log(result.data)
+                setReviews(prevState => result.data)
+            }
+        }
+        fetchReviews()
+            .catch(console.error)
+    }, [userId]);
+
 
     return (
         <div>
             <div>
-                        <h1>{person} {person === "You" ? "Want" : "Wants"} to Read:</h1>
-                        <ul>
-                            {wantToRead.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link to={`/book/${item.book.id}`}>
-                                 to book details
-                             </Link></li>)}
-                        </ul>
-                    </div>
-                    <div>
-                        <h1>{person} {person === "You" ? "Are" : "Is"} Currently Reading:</h1>
-                        <ul>
-                            {currentlyReading.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link to={`/book/${item.book.id}`}>
-                                 to book details
-                             </Link></li>)}
-                        </ul>
-                    </div>
-                    <div>
-                        <h1>{person} {person === "You" ? "Have" : "Has"} Read:</h1>
-                        <ul>
-                            {hasRead.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link to={`/book/${item.book.id}`}>
-                                 to book details
-                             </Link></li>)}
-                        </ul>
-                    </div>
+                <h1>{person} {person === "You" ? "Want" : "Wants"} to Read:</h1>
+                <ul>
+                    {wantToRead.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link
+                        to={`/book/${item.book.id}`}>
+                        to book details
+                    </Link></li>)}
+                </ul>
+            </div>
+            <div>
+                <h1>{person} {person === "You" ? "Are" : "Is"} Currently Reading:</h1>
+                <ul>
+                    {currentlyReading.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link
+                        to={`/book/${item.book.id}`}>
+                        to book details
+                    </Link></li>)}
+                </ul>
+            </div>
+            <div>
+                <h1>{person} {person === "You" ? "Have" : "Has"} Read:</h1>
+                <ul>
+                    {hasRead.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link
+                        to={`/book/${item.book.id}`}>
+                        to book details
+                    </Link></li>)}
+                </ul>
+            </div>
+            <div>
+                <h1>{person} {person === "You" ? "Have" : "Has"} Reviewed:</h1>
+                <ul>
+                    {reviews.map((item) => <li
+                        key={item.id}>{item.content} on {item.book.title} by {item.book.author} with
+                        rating {item.rating} out of 5</li>)}
+                </ul>
+            </div>
+
         </div>
     )
 }

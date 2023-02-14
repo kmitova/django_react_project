@@ -143,15 +143,18 @@ const UserBookInfo = (props) => {
 
     return (
         <div>
-            <div>
+            {wantToRead.length > 0 ?
+                <div>
                 <h1>{person} {person === "You" ? "Want" : "Wants"} to Read:</h1>
                 <ul>
-                    {wantToRead.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link
-                        to={`/book/${item.book.id}`}>
-                        to book details
-                    </Link></li>)}
+            {wantToRead.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link
+                to={`/book/${item.book.id}`}>
+                to book details
+                </Link></li>)}
                 </ul>
-            </div>
+                </div>
+             : `${person} ${person === "You" ? "want" : "wants"} to read 0 books`}
+            {currentlyReading.length > 0 ?
             <div>
                 <h1>{person} {person === "You" ? "Are" : "Is"} Currently Reading:</h1>
                 <ul>
@@ -161,6 +164,8 @@ const UserBookInfo = (props) => {
                     </Link></li>)}
                 </ul>
             </div>
+                : `${person} ${person === "You" ? "are" : "is"} currently reading 0 books` }
+            {hasRead.length > 0 ?
             <div>
                 <h1>{person} {person === "You" ? "Have" : "Has"} Read:</h1>
                 <ul>
@@ -170,6 +175,8 @@ const UserBookInfo = (props) => {
                     </Link></li>)}
                 </ul>
             </div>
+                : `${person} ${person === "You" ? "have" : "has"} read 0 books`}
+            {reviews.length > 0 ?
             <div>
                 <h1>{person} {person === "You" ? "Have" : "Has"} Reviewed:</h1>
                 <ul>
@@ -178,6 +185,7 @@ const UserBookInfo = (props) => {
                         rating {item.rating} out of 5</li>)}
                 </ul>
             </div>
+                : `${person} ${person === "You" ? "Have" : "Has"} 0 reviews` }
 
         </div>
     )

@@ -56,22 +56,7 @@ const BookStatus = (props) => {
         console.log(data)
         console.log(wantToReadObject)
         if (wantToReadObject !== null) {
-            await axios.delete(`${url}api_books/edit_want_to_read/${wantToReadObject.id}/`,
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`
-                    }, data
-                })
-                .then((result) => {
-                    setWantToRead(false)
-                    console.log('success, delete request')
-                    console.log(result.data);
-                })
-                .catch((error) => {
-                    console.log(error);
-                })
+            console.log('want to read object is not null')
         } else {
             await axios.post(`${url}api_books/want_to_read/`,
                 data, {
@@ -137,8 +122,10 @@ const BookStatus = (props) => {
         }
         console.log(data)
         console.log(currentlyReadingObject)
-        if (currentlyReadingObject !== null) {
-            await axios.delete(`${url}api_books/edit_currently_reading/${currentlyReadingObject.id}/`,
+
+
+        if (wantToReadObject !== null) {
+            await axios.delete(`${url}api_books/edit_want_to_read/${wantToReadObject.id}/`,
                 {
                     headers: {
                         'Accept': 'application/json',
@@ -147,13 +134,17 @@ const BookStatus = (props) => {
                     }, data
                 })
                 .then((result) => {
-                    setCurrentlyReading(false)
+                    setWantToRead(false)
                     console.log('success, delete request')
                     console.log(result.data);
                 })
                 .catch((error) => {
                     console.log(error);
                 })
+        }
+
+        if (currentlyReadingObject !== null) {
+            console.log('currently reading object is not null')
         } else {
             await axios.post(`${url}api_books/currently_reading/`,
                 data, {
@@ -197,22 +188,11 @@ const BookStatus = (props) => {
             });
             if (result.status === 200) {
                 console.log(result.data)
-                // if (result.data.length > 0) {
-                //
-                //     let relevantData = result.data[result.data.length - 1]
-                //     if (relevantData.user === user.user_id) {
-                //         console.log(relevantData)
-                //     setBooksIsRead(prevState => relevantData.is_read)
-                //     setIsReadObject(prevState => relevantData)
-                //     }
-                //
-                //
-                // }
                 for (let item of result.data) {
-                    console.log(item)
-                    console.log(item.user)
-                    console.log(book)
-                    console.log(item.book.id, book.id, item.user, user.user_id)
+                    // console.log(item)
+                    // console.log(item.user)
+                    // console.log(book)
+                    // console.log(item.book.id, book.id, item.user, user.user_id)
                     console.log(item.book.id === book.id && item.user === user.user_id)
                     if (item.book.id === book.id && item.user === user.user_id) {
                         setBooksIsRead(item.is_read)
@@ -229,7 +209,6 @@ const BookStatus = (props) => {
 
     const changeStatus = async (e, book) => {
         e.preventDefault();
-        // setBooksIsRead(e.target.checked)
         let token = getAccessToken()
         let data = {
             book: bookId,
@@ -238,6 +217,26 @@ const BookStatus = (props) => {
         }
         console.log(data)
         console.log(isReadObject)
+
+        if (currentlyReadingObject !== null) {
+            await axios.delete(`${url}api_books/edit_currently_reading/${currentlyReadingObject.id}/`,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
+                    }, data
+                })
+                .then((result) => {
+                    setCurrentlyReading(false)
+                    console.log('success, delete request')
+                    console.log(result.data);
+                })
+                .catch((error) => {
+                    console.log(error);
+                })
+        }
+
         if (isReadObject !== null) {
             await axios.delete(`${URL}api_books/edit_book_status/${isReadObject.id}/`,
             {
@@ -291,20 +290,26 @@ const BookStatus = (props) => {
                     wantToRead={wantToRead}
                     setChangeWantToRead={setChangeWantToRead}/>
                 : ''}
-            {currentlyReadingObject === null && wantToReadObject !== null && isReadObject === null ?
+            {currentlyReadingObject === null
+            && wantToReadObject !== null && isReadObject === null
+                ?
             <CurrentlyReading
                               handleCurrentlyReading={handleCurrentlyReading}
                               changeCurrentlyReadingStatus={changeCurrentlyReadingStatus}
                               currentlyReading={currentlyReading}
                               setChangeCurrentlyReading={setChangeCurrentlyReading}
             /> : '' }
-            {isReadObject === null && currentlyReadingObject !== null && wantToReadObject !== null ?
+            {isReadObject === null
+            && currentlyReadingObject !== null
+                // && wantToReadObject !== null
+                ?
             <ChangeReadStatus book={book} user={user} id={id}
             changeStatus={changeStatus}
             changeBookIsReadStatus={changeBookIsReadStatus}
             bookIsRead={bookIsRead}/>
                 : ''}
-            {isReadObject !== null && currentlyReadingObject !== null && wantToReadObject !== null
+            {isReadObject !== null
+            // && currentlyReadingObject !== null && wantToReadObject !== null
             ?
             <h2>Book is read!</h2>
             : ''}

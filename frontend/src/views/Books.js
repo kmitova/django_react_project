@@ -1,104 +1,92 @@
 import React, {useContext, useEffect, useState} from "react";
 import UserInfo from "../components/UserInfo";
-// import SearchBook from "../components/SearchBook";
 import AuthContext from "../context/AuthContext";
-import axios from "axios";
-import getAccessToken from "../utils/getToken";
-// import AddBook from "../components/AddBook";
-import {URL} from "../utils/url";
-import {Link} from "react-router-dom";
 import UserBookInfo from "../components/UserBookInfo";
+import getAccessToken from "../utils/getToken";
+import {URL} from "../utils/url";
+import axios from "axios";
 
 const Books = () => {
     const {user} = useContext(AuthContext);
-    // const [books, setBooks] = useState([])
-    // const [wantToRead, setWantToRead] = useState([])
-    // const [currentlyReading, setCurrentlyReading] = useState([])
-    //
-    //
-    // useEffect(() => {
-    //     const fetchData = async () => {
-    //         let token = getAccessToken();
-    //         let result = await axios.get(`${URL}api_books/books/`, {
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer  ${token}`
-    //             }
-    //         });
-    //         if (result.status === 200) {
-    //             const books = result.data
-    //             console.log(books)
-    //             setBooks(prevState => books)
-    //         }
-    //     }
-    //     fetchData()
-    //         .catch(console.error)
-    // }, [])
-    //
-    // useEffect(() => {
-    //     const fetchWantToRead = async () => {
-    //         let token = getAccessToken();
-    //         let result = await axios.get(`${URL}api_books/view_want_to_read/`, {
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer  ${token}`
-    //             }
-    //         });
-    //         if (result.status === 200) {
-    //             console.log(result.data)
-    //
-    //             setWantToRead(prevState => result.data)
-    //         }
-    //     }
-    //     fetchWantToRead()
-    //         .catch(console.error)
-    // }, [])
-    //
-    // useEffect(() => {
-    //     const fetchCurrentlyReading = async () => {
-    //         let token = getAccessToken();
-    //         let result = await axios.get(`${URL}api_books/view_currently_reading/`, {
-    //             headers: {
-    //                 'Accept': 'application/json',
-    //                 'Content-Type': 'application/json',
-    //                 'Authorization': `Bearer  ${token}`
-    //             }
-    //         });
-    //         if (result.status === 200) {
-    //             console.log(result.data)
-    //
-    //             setCurrentlyReading(prevState => result.data)
-    //         }
-    //     }
-    //     fetchCurrentlyReading()
-    //         .catch(console.error)
-    // }, [])
+    const [shelves, setShelves] = useState([])
+    const [shelfName, setShelfName] = useState('')
+
+    useEffect(() => {
+        const fetchShelves = async () => {
+            let token = getAccessToken()
+            let result = await axios.get(`${URL}api_books/view_shelves/`,
+                {
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer  ${token}`
+                    }
+                }
+                );
+            if (result.status === 200) {
+                console.log(result.data)
+                setShelves(result.data)
+            }
+        }
+        fetchShelves()
+            .catch(console.error)
+    }, [shelves])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        let token = getAccessToken();
+        let data = {
+            name: shelfName,
+            user: user.user_id
+        }
+        console.log(data)
+        await axios.post(`${URL}api_books/add_shelf/`,
+            data,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            .then((result) => {
+                console.log(result.data);
+                setShelfName('')
+            })
+            .catch((error) => {
+                console.log(error)
+            })
+    }
+
+
 
     return (
         <section>
             {user && <UserInfo user={user}/>}
             {!user ? <h2>login to see your books</h2> :
                 <section>
-                    {/*<h2>Book count: {books.length}</h2>*/}
                     <UserBookInfo user={user} />
-                    {/*<div>*/}
-                    {/*    <h1>You Want to Read:</h1>*/}
-                    {/*    <ul>*/}
-                    {/*        {wantToRead.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link to={`/book/${item.book.id}`}>*/}
-                    {/*             to book details*/}
-                    {/*         </Link></li>)}*/}
-                    {/*    </ul>*/}
-                    {/*</div>*/}
-                    {/*<div>*/}
-                    {/*    <h1>You are currently reading:</h1>*/}
-                    {/*    <ul>*/}
-                    {/*        {currentlyReading.map((item) => <li key={item.id}>{item.book.title} by {item.book.author} <Link to={`/book/${item.book.id}`}>*/}
-                    {/*             to book details*/}
-                    {/*         </Link></li>)}*/}
-                    {/*    </ul>*/}
-                    {/*</div>*/}
+                    <section>
+                        <div>
+                            <h3>Your custom shelves</h3>
+                            {shelves.length === 0
+                                ?
+                                <h5>You don't have any custom shelves</h5>
+                                :
+                            <ul>
+                                {shelves.map((shelf) => (<li key={shelf.id}>{shelf.name}</li>))}
+                            </ul>
+                            }
+                        </div>
+                        <form action="" onSubmit={handleSubmit}>
+                            <h4>Add a new shelf</h4>
+                            <div>
+                                <label htmlFor="">Shelf name:</label>
+                                <input type="text" value={shelfName} onChange={(e) => setShelfName(e.target.value)}/>
+                            </div>
+                            <button>Add</button>
+                        </form>
+                    </section>
                 </section>
             }
         </section>

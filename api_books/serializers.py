@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading
+from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading, Shelf
 from api_users.serializers import UserSerializer
 
 
@@ -139,4 +139,13 @@ class CategorySerializer(serializers.ModelSerializer):
         model = Category
         fields = ('id', 'name',)
 
+
+class ShelfSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Shelf
+        fields = ('id', 'name', 'user')
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
 

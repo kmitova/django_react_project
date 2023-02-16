@@ -4,7 +4,7 @@ from api_books.views import BookAddAPIView, BookDetailsAPIView, CategoriesAPIVie
     BookStatusUpdateAPIView, ReviewAddAPIView, ReviewAPIView, ReviewUpdateAPIView, ReviewDeleteAPIView, BookStatusView, \
     WantToReadAddBookAPIView, WantToReadViewAPIView, RemoveFromWantToReadViewAPIView, CurrentlyReadingAddAPIView, \
     CurrentlyReadingAPIView, RemoveFromCurrentlyReadingAPIView, AllReadBooksStatusView, IsReadAPIView, \
-    RemoveIsReadAPIView, AllReviewsOfThisBook, AllReviewsByUserAPIView
+    RemoveIsReadAPIView, AllReviewsOfThisBook, AllReviewsByUserAPIView, ListAddShelfAPIView
 
 urlpatterns = (
     path('books/', BooksListView.as_view(), name='books list'),
@@ -33,5 +33,8 @@ urlpatterns = (
     path('edit_review/<int:pk>/', ReviewUpdateAPIView.as_view(), name='edit review'),
     path('delete_review/<int:pk>/', ReviewDeleteAPIView.as_view(), name='delete review'),
     path('categories/', CategoriesAPIView.as_view(), name='book categories'),
+
+    path('add_shelf/', ListAddShelfAPIView.as_view(), name='add shelf'),
+    path('view_shelves/', ListAddShelfAPIView.as_view(), name='view shelves'),
 )
 

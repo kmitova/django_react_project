@@ -200,3 +200,13 @@ class Comment(models.Model):
 
     class Meta:
         ordering = ['publication_date']
+
+
+class Shelf(models.Model):
+    name = models.CharField(
+        max_length=255,
+        null=False,
+        blank=False
+            )
+
+    user = models.ForeignKey(UserModel, on_delete=models.CASCADE,)

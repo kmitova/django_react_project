@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading, Shelf
+from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading, Shelf, CustomShelfStatus
 from api_users.serializers import UserSerializer
 
 
@@ -149,3 +149,16 @@ class ShelfSerializer(serializers.ModelSerializer):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
 
+
+class AddBookToCustomShelfSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CustomShelfStatus
+        fields = ('id', 'custom_shelf_status', 'user', 'book', 'shelf.shelf_id')
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)
+
+    def update(self, instance, validated_data):
+        super().update(instance=instance, validated_data=validated_data)
+        return instance

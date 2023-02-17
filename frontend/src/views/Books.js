@@ -1,36 +1,37 @@
-import React, {useContext, useEffect, useState} from "react";
+import React, {useContext, useState} from "react";
 import UserInfo from "../components/UserInfo";
 import AuthContext from "../context/AuthContext";
 import UserBookInfo from "../components/UserBookInfo";
 import getAccessToken from "../utils/getToken";
 import {URL} from "../utils/url";
 import axios from "axios";
+import Shelves from "../components/Shelves";
 
 const Books = () => {
     const {user} = useContext(AuthContext);
-    const [shelves, setShelves] = useState([])
+    // const [shelves, setShelves] = useState([])
     const [shelfName, setShelfName] = useState('')
 
-    useEffect(() => {
-        const fetchShelves = async () => {
-            let token = getAccessToken()
-            let result = await axios.get(`${URL}api_books/view_shelves/`,
-                {
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer  ${token}`
-                    }
-                }
-                );
-            if (result.status === 200) {
-                console.log(result.data)
-                setShelves(result.data)
-            }
-        }
-        fetchShelves()
-            .catch(console.error)
-    }, [shelves])
+    // useEffect(() => {
+    //     const fetchShelves = async () => {
+    //         let token = getAccessToken()
+    //         let result = await axios.get(`${URL}api_books/view_shelves/`,
+    //             {
+    //                 headers: {
+    //                     'Accept': 'application/json',
+    //                     'Content-Type': 'application/json',
+    //                     'Authorization': `Bearer  ${token}`
+    //                 }
+    //             }
+    //             );
+    //         if (result.status === 200) {
+    //             console.log(result.data)
+    //             setShelves(result.data)
+    //         }
+    //     }
+    //     fetchShelves()
+    //         .catch(console.error)
+    // }, [shelves])
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -67,17 +68,7 @@ const Books = () => {
                 <section>
                     <UserBookInfo user={user} />
                     <section>
-                        <div>
-                            <h3>Your custom shelves</h3>
-                            {shelves.length === 0
-                                ?
-                                <h5>You don't have any custom shelves</h5>
-                                :
-                            <ul>
-                                {shelves.map((shelf) => (<li key={shelf.id}>{shelf.name}</li>))}
-                            </ul>
-                            }
-                        </div>
+                        <Shelves />
                         <form action="" onSubmit={handleSubmit}>
                             <h4>Add a new shelf</h4>
                             <div>

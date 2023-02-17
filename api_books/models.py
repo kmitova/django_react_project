@@ -206,7 +206,30 @@ class Shelf(models.Model):
     name = models.CharField(
         max_length=255,
         null=False,
-        blank=False
+        blank=False,
+        unique=True
             )
 
     user = models.ForeignKey(UserModel, on_delete=models.CASCADE,)
+
+
+class CustomShelfStatus(models.Model):
+    DEFAULT_STATE = False
+
+    custom_shelf_status = models.BooleanField(
+        default=DEFAULT_STATE,
+        null=False,
+        blank=False,
+    )
+    book = models.ForeignKey(
+        Book, on_delete=models.RESTRICT, blank=False, null=False
+    )
+
+    user = models.ForeignKey(
+        UserModel,
+        on_delete=models.RESTRICT,
+    )
+
+    shelf = models.ForeignKey(
+        Book, on_delete=models.RESTRICT, blank=False, null=False, related_name='shelf_id'
+    )

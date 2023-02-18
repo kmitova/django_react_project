@@ -153,7 +153,7 @@ class ShelfSerializer(serializers.ModelSerializer):
 class AddBookToCustomShelfSerializer(serializers.ModelSerializer):
     class Meta:
         model = CustomShelfStatus
-        fields = ('id', 'custom_shelf_status', 'user', 'book', 'shelf.shelf_id')
+        fields = ('id', 'custom_shelf_status', 'user', 'book', 'shelf')
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user

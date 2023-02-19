@@ -74,9 +74,9 @@ const BookDetails = () => {
                 );
             if (result.status === 200) {
                 console.log(result.data)
-                let res = result.data.map((i) => i.shelf)
+                let res = result.data.map((i) => ({s: i.shelf, b: i.book}))
                 console.log(res)
-                setBooksCustomShelves(result.data.map((i) => i.shelf))
+                setBooksCustomShelves(res)
             }
         }
         fetchBooksOnCustomShelves()
@@ -141,8 +141,8 @@ const BookDetails = () => {
                     <div>
                         <p>{shelf.name}</p>
                     </div>
-                    <button {...booksCustomShelves.includes(shelf.id) ? 'disabled' : ''}>
-                        Add book to this shelf {booksCustomShelves.includes(shelf.id) ? 'disabled bc it includes book' : ''}
+                    <button disabled={(booksCustomShelves.some(i => i.s === shelf.id && i.b === book.id))}>
+                        Add book to this shelf
                     </button>
                         </form>
                 </li>))}

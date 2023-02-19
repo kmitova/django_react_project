@@ -278,3 +278,14 @@ class AddViewBookToCustomShelfAPIView(ListCreateAPIView):
         permissions.IsAuthenticated,
     )
 
+
+class ShowCustomShelfAPIView(RetrieveUpdateAPIView):
+    queryset = Shelf.objects.all()
+    serializer_class = ShelfSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    def get_object(self):
+        shelf = super().get_object()
+        return shelf

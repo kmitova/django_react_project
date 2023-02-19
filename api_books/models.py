@@ -222,7 +222,7 @@ class CustomShelfStatus(models.Model):
         blank=False,
     )
     book = models.ForeignKey(
-        Book, on_delete=models.RESTRICT, blank=False, null=False, related_name='book'
+        Book, on_delete=models.RESTRICT, blank=False, null=False,
     )
 
     user = models.ForeignKey(
@@ -231,5 +231,5 @@ class CustomShelfStatus(models.Model):
     )
 
     shelf = models.ForeignKey(
-        Shelf, on_delete=models.RESTRICT, blank=False, null=False, related_name='shelf'
+        Shelf, on_delete=models.RESTRICT, blank=False, null=False,
     )

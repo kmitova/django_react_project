@@ -2,6 +2,7 @@ import React, {useEffect, useState} from "react";
 import getAccessToken from "../utils/getToken";
 import axios from "axios";
 import {URL} from "../utils/url";
+import {Link} from "react-router-dom";
 
 const Shelves = (props) => {
     const [shelves, setShelves] = useState([])
@@ -34,7 +35,7 @@ const Shelves = (props) => {
                 <h5>You don't have any custom shelves</h5>
                 :
             <ul>
-                {shelves.map((shelf) => (<li key={shelf.id}>{shelf.name}</li>))}
+                {shelves.map((shelf) => (<li key={shelf.id}><Link to={`/shelf/${shelf.id}`}>{shelf.name}</Link></li>))}
             </ul>
             }
         </div>

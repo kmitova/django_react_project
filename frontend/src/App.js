@@ -3,7 +3,6 @@ import "./index.css";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-// import PrivateRoute from "./utils/PrivateRoute";
 import { AuthProvider } from "./context/AuthContext";
 import Home from "./views/HomePage";
 import Login from "./views/LoginPage";
@@ -15,6 +14,9 @@ import Users from "./views/Users";
 import UserDetails from "./components/UserDetails";
 import ProfilePage from "./views/ProfilePage";
 import EditProfile from "./components/PofileEdit";
+import CustomShelf from "./components/CustomShelf";
+
+
 
 function App() {
   return (
@@ -33,6 +35,7 @@ function App() {
             <Route element={<UserDetails />} path="/user/:id"/>
             <Route element={<ProfilePage />} path="/your_profile/:id"/>
             <Route element={<EditProfile />} path="/edit-profile/:id"/>
+            <Route element={<CustomShelf />} path="/shelf/:id"/>
           </Routes>
         </AuthProvider>
         <Footer />

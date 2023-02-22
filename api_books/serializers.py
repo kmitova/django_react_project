@@ -107,7 +107,6 @@ class BookShowReviewSerializer(serializers.ModelSerializer):
         fields = ('id', 'rating', 'content', 'book', 'user')
 
 
-
 class BookEditReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
@@ -141,9 +140,13 @@ class CategorySerializer(serializers.ModelSerializer):
 
 
 class ShelfSerializer(serializers.ModelSerializer):
+    book = BookDetailsSerializer(read_only=True)
+
     class Meta:
         model = Shelf
-        fields = ('id', 'name', 'user')
+        fields = ('id', 'name', 'user', 'book')
+
+        extra_kwargs = {'book': {'read_only': True}}
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
@@ -151,6 +154,7 @@ class ShelfSerializer(serializers.ModelSerializer):
 
 
 class AddBookToCustomShelfSerializer(serializers.ModelSerializer):
+    book = BookDetailsSerializer(read_only=True)
     class Meta:
         model = CustomShelfStatus
         fields = ('id', 'custom_shelf_status', 'user', 'book', 'shelf')

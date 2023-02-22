@@ -35,9 +35,9 @@ class BookAddAPIView(ListCreateAPIView):
     queryset = Book.objects.all()
     create_serializer_class = BookAddSerializer
     list_serializer_class = BooksListSerializer
-    permission_classes = (
-        permissions.IsAuthenticated,
-    )
+    # permission_classes = (
+    #     permissions.IsAuthenticated,
+    # )
 
     def get_serializer_class(self):
         if self.request.method == 'GET':
@@ -277,6 +277,23 @@ class AddViewBookToCustomShelfAPIView(ListCreateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
     )
+
+
+class BooksOnCustomShelvesAPIView(RetrieveDestroyAPIView):
+    queryset = Shelf.objects.all()
+    # serializer_class = AddBookToCustomShelfSerializer
+    serializer_class = ShelfSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    lookup_url_kwarg = "pk"
+
+    # def get_queryset(self):
+    #     # user = self.request.user
+    #     pk = self.kwargs.get(self.lookup_url_kwarg)
+    #     # queryset = Shelf.objects.filter(shelf=pk)
+    #     print(queryset)
+    #     return queryset
 
 
 class ShowCustomShelfAPIView(RetrieveUpdateAPIView):

@@ -21,15 +21,28 @@ class BookspiderSpider(scrapy.Spider):
 
 session = HTMLSession()
 full = []
+data = {
+        'books': [
+
+        ]
+    }
+
 for i in range(1, 6):
     r = session.get(f"https://knigomania.bg/izdanija-na-anglijski-ezik.html?p={i}")
     page_html = r.html
-    el = page_html.find('.product-item-details')
-    print(el)
+    element = page_html.find('.product-item-details')
+    for el in element:
+        lst = el.text.split('\n')
+        title = lst[0].lower().title()
+        author = lst[1].lower().title()
+        data['books'].append({
+            'title': title,
+            'author': author
+        })
 
-    # r.html.render()
-    # lst = r.html.xpath('//h3[@class="product-item-name"]')
-    # print(lst)
-    # full += lst
-json.dump(full, open("links.json","wt"))
+with open('books.json', 'w') as file:
+    json.dump(data, file, indent=4)
+
+
+
 

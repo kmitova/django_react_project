@@ -306,3 +306,17 @@ class ShowCustomShelfAPIView(RetrieveUpdateAPIView):
     def get_object(self):
         shelf = super().get_object()
         return shelf
+
+
+class ShowCustomShelvesBooks(ListAPIView):
+    queryset = CustomShelfStatus.objects.all()
+    serializer_class = AddBookToCustomShelfSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    lookup_url_kwarg = "pk"
+
+    def get_queryset(self):
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        queryset = CustomShelfStatus.objects.filter(shelf=pk)
+        return queryset

@@ -9,7 +9,7 @@ from api_books.serializers import BookAddSerializer, BooksListSerializer, Catego
     BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
     BookDeleteReviewSerializer, WantToReadBook, AddWantToReadBookSerializer, AddToCurrentlyReadingSerializer, \
     CurrentlyReadingSerializer, ChangeIsReadSerializer, BookIsReadSerializer, BookShowReviewSerializer, ShelfSerializer, \
-    AddBookToCustomShelfSerializer, AddCommentToReviewSerializer
+    AddBookToCustomShelfSerializer, AddCommentToReviewSerializer, ShowCommentsToReviewSerializer
 
 
 class BooksListView(ListAPIView):
@@ -333,7 +333,7 @@ class AddCommentToReviewAPIView(ListCreateAPIView):
 
 class ShowCommentsOnReview(ListAPIView):
     queryset = Comment.objects.all()
-    serializer_class = AddCommentToReviewSerializer
+    serializer_class = ShowCommentsToReviewSerializer
     permission_classes = (
         permissions.IsAuthenticated,
     )

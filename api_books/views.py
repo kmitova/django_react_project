@@ -329,3 +329,17 @@ class AddCommentToReviewAPIView(ListCreateAPIView):
     permission_classes = (
         permissions.IsAuthenticated,
     )
+
+
+class ShowCommentsOnReview(ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = AddCommentToReviewSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    lookup_url_kwarg = "pk"
+
+    def get_queryset(self):
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        queryset = Comment.objects.filter(review=pk)
+        return queryset

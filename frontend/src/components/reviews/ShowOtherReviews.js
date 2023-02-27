@@ -1,8 +1,5 @@
 import {Link} from "react-router-dom";
-import React, {useContext, useState} from "react";
-import getAccessToken from "../../utils/getToken";
-import axios from "axios";
-import {URL} from "../../utils/url";
+import React, {useContext} from "react";
 import AuthContext from "../../context/AuthContext";
 import CommentSection from "../comments/CommentSection";
 

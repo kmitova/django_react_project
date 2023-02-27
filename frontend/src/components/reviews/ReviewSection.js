@@ -57,7 +57,8 @@ const ReviewSection = (props) => {
                 console.log(result.data)
                     for (let i of result.data) {
                         console.log(i.book, book.id)
-                        if (i.book === book.id) {
+                        if (i.book.id === book.id) {
+                            console.log(book.id)
                             setReviews(prevState => [...prevState, i])
                         }
                         console.log(reviews)

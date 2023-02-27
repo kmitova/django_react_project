@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
-from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading, Shelf, CustomShelfStatus
+from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading, Shelf, CustomShelfStatus, \
+    Comment
 from api_users.serializers import UserSerializer
 
 
@@ -166,3 +167,13 @@ class AddBookToCustomShelfSerializer(serializers.ModelSerializer):
     def update(self, instance, validated_data):
         super().update(instance=instance, validated_data=validated_data)
         return instance
+
+
+class AddCommentToReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', 'text', 'review', 'user')
+
+    def create(self, validated_data):
+        validated_data['user'] = self.context['request'].user
+        return super().create(validated_data)

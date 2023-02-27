@@ -3,12 +3,13 @@ from rest_framework.exceptions import PermissionDenied
 from rest_framework.generics import ListCreateAPIView, ListAPIView, RetrieveUpdateAPIView, CreateAPIView, \
     RetrieveDestroyAPIView
 
-from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading, Shelf, CustomShelfStatus
+from api_books.models import Book, Category, Review, IsRead, WantToRead, CurrentlyReading, Shelf, CustomShelfStatus, \
+    Comment
 from api_books.serializers import BookAddSerializer, BooksListSerializer, CategorySerializer, BookDetailsSerializer, \
     BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
     BookDeleteReviewSerializer, WantToReadBook, AddWantToReadBookSerializer, AddToCurrentlyReadingSerializer, \
     CurrentlyReadingSerializer, ChangeIsReadSerializer, BookIsReadSerializer, BookShowReviewSerializer, ShelfSerializer, \
-    AddBookToCustomShelfSerializer
+    AddBookToCustomShelfSerializer, AddCommentToReviewSerializer
 
 
 class BooksListView(ListAPIView):
@@ -320,3 +321,11 @@ class ShowCustomShelvesBooks(ListAPIView):
         pk = self.kwargs.get(self.lookup_url_kwarg)
         queryset = CustomShelfStatus.objects.filter(shelf=pk)
         return queryset
+
+
+class AddCommentToReviewAPIView(ListCreateAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = AddCommentToReviewSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )

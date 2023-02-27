@@ -1,9 +1,11 @@
-import React, {useState} from "react";
+import React, {useContext, useState} from "react";
 import getAccessToken from "../../utils/getToken";
 import axios from "axios";
 import {URL} from "../../utils/url";
+import AuthContext from "../../context/AuthContext";
 
 const AddReview = (props) => {
+    const {user} = useContext(AuthContext);
     const [content, setContent] = useState('')
     const [rating, setRating] = useState(5)
     const {book} = props;
@@ -14,7 +16,8 @@ const AddReview = (props) => {
         let data = {
             rating: rating,
             content: content,
-            book: book.id
+            book: book.id,
+            user: user.user_id
         }
         console.log(data)
         await axios.post(`${URL}api_books/add_review/`,

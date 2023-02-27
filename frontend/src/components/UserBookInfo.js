@@ -3,6 +3,7 @@ import getAccessToken from "../utils/getToken";
 import axios from "axios";
 import {URL} from "../utils/url";
 import {Link} from "react-router-dom";
+import DateFormatter from "./DateFormat";
 
 const UserBookInfo = (props) => {
     const {user} = props;
@@ -26,6 +27,7 @@ const UserBookInfo = (props) => {
     const [currentlyReading, setCurrentlyReading] = useState([])
     const [hasRead, setHasRead] = useState([])
     const [reviews, setReviews] = useState([])
+    const [comments, setComments] = useState([])
 
 
     useEffect(() => {
@@ -140,6 +142,25 @@ const UserBookInfo = (props) => {
             .catch(console.error)
     }, [userId]);
 
+    useEffect(() => {
+        const fetchComments = async () => {
+            let token = getAccessToken();
+            let result = await axios.get(`${URL}api_books/show_user_comments/${userId}`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer  ${token}`
+                }
+            });
+            if (result.status === 200) {
+                console.log(result.data)
+                setComments(prevState => result.data)
+            }
+        }
+        fetchComments()
+            .catch(console.error)
+    }, [userId]);
+
 
     return (
         <div>
@@ -186,6 +207,16 @@ const UserBookInfo = (props) => {
                 </ul>
             </div>
                 : `${person} ${person === "You" ? "Have" : "Has"} 0 reviews` }
+
+            {comments.length > 0 ?
+            <div>
+                <h1>{person} {person === "You" ? "Have" : "Has"} Posted {comments.length} comments:</h1>
+                <ul>
+                    {comments.map((item) => <li
+                        key={item.id}>{item.text} on {item.review.user.username}'s review of {item.review.book.title} at <DateFormatter date={item.publication_date} /></li>)}
+                </ul>
+            </div>
+                : `${person} ${person === "You" ? "Have" : "Has"} commented 0 times.` }
 
         </div>
     )

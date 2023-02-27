@@ -1,12 +1,12 @@
 from django.urls import path
 
-from api_books.views import BookAddAPIView, BookDetailsAPIView, CategoriesAPIView, BooksListView, \
+from api_books.views import BookDetailsAPIView, CategoriesAPIView, BooksListView, \
     BookStatusUpdateAPIView, ReviewAddAPIView, ReviewAPIView, ReviewUpdateAPIView, ReviewDeleteAPIView, BookStatusView, \
     WantToReadAddBookAPIView, WantToReadViewAPIView, RemoveFromWantToReadViewAPIView, CurrentlyReadingAddAPIView, \
-    CurrentlyReadingAPIView, RemoveFromCurrentlyReadingAPIView, AllReadBooksStatusView, IsReadAPIView, \
+    CurrentlyReadingAPIView, RemoveFromCurrentlyReadingAPIView, IsReadAPIView, \
     RemoveIsReadAPIView, AllReviewsOfThisBook, AllReviewsByUserAPIView, ListAddShelfAPIView, \
-    AddViewBookToCustomShelfAPIView, ShowCustomShelfAPIView, BooksOnCustomShelvesAPIView, ShowCustomShelvesBooks, \
-    AddCommentToReviewAPIView, ShowCommentsOnReview
+    AddViewBookToCustomShelfAPIView, BooksOnCustomShelvesAPIView, ShowCustomShelvesBooks, \
+    AddCommentToReviewAPIView, ShowCommentsOnReview, ShowAllUsersComments
 
 urlpatterns = (
     path('books/', BooksListView.as_view(), name='books list'),
@@ -46,5 +46,6 @@ urlpatterns = (
     path('add_comment/', AddCommentToReviewAPIView.as_view(), name='add comment'),
     path('show_comments/<int:pk>/', ShowCommentsOnReview.as_view(), name='show comments'),
 
+    path('show_user_comments/<int:pk>/', ShowAllUsersComments.as_view(), name='show user comments'),
 )
 

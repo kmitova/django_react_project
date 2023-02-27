@@ -108,6 +108,7 @@ class BookShowReviewSerializer(serializers.ModelSerializer):
         fields = ('id', 'rating', 'content', 'book', 'user')
 
 
+
 class BookEditReviewSerializer(serializers.ModelSerializer):
     class Meta:
         model = Review
@@ -188,3 +189,12 @@ class ShowCommentsToReviewSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user
         return super().create(validated_data)
+
+
+class ShowAllUsersCommentsSerializer(serializers.ModelSerializer):
+    review = BookShowReviewSerializer(read_only=True)
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = Comment
+        fields = ('id', 'text', 'review', 'user', 'publication_date')

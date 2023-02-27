@@ -9,7 +9,8 @@ from api_books.serializers import BookAddSerializer, BooksListSerializer, Catego
     BookAddReviewSerializer, ReviewSerializer, BookEditReviewSerializer, \
     BookDeleteReviewSerializer, WantToReadBook, AddWantToReadBookSerializer, AddToCurrentlyReadingSerializer, \
     CurrentlyReadingSerializer, ChangeIsReadSerializer, BookIsReadSerializer, BookShowReviewSerializer, ShelfSerializer, \
-    AddBookToCustomShelfSerializer, AddCommentToReviewSerializer, ShowCommentsToReviewSerializer
+    AddBookToCustomShelfSerializer, AddCommentToReviewSerializer, ShowCommentsToReviewSerializer, \
+ ShowAllUsersCommentsSerializer
 
 
 class BooksListView(ListAPIView):
@@ -342,4 +343,18 @@ class ShowCommentsOnReview(ListAPIView):
     def get_queryset(self):
         pk = self.kwargs.get(self.lookup_url_kwarg)
         queryset = Comment.objects.filter(review=pk)
+        return queryset
+
+
+class ShowAllUsersComments(ListAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = ShowAllUsersCommentsSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+    lookup_url_kwarg = "pk"
+
+    def get_queryset(self):
+        pk = self.kwargs.get(self.lookup_url_kwarg)
+        queryset = Comment.objects.filter(user=pk)
         return queryset

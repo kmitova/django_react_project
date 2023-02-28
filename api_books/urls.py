@@ -6,7 +6,7 @@ from api_books.views import BookDetailsAPIView, CategoriesAPIView, BooksListView
     CurrentlyReadingAPIView, RemoveFromCurrentlyReadingAPIView, IsReadAPIView, \
     RemoveIsReadAPIView, AllReviewsOfThisBook, AllReviewsByUserAPIView, ListAddShelfAPIView, \
     AddViewBookToCustomShelfAPIView, BooksOnCustomShelvesAPIView, ShowCustomShelvesBooks, \
-    AddCommentToReviewAPIView, ShowCommentsOnReview, ShowAllUsersComments
+    AddCommentToReviewAPIView, ShowCommentsOnReview, ShowAllUsersComments, CommentDeleteAPIView
 
 urlpatterns = (
     path('books/', BooksListView.as_view(), name='books list'),
@@ -47,5 +47,7 @@ urlpatterns = (
     path('show_comments/<int:pk>/', ShowCommentsOnReview.as_view(), name='show comments'),
 
     path('show_user_comments/<int:pk>/', ShowAllUsersComments.as_view(), name='show user comments'),
+    path('delete_comment/<int:pk>/', CommentDeleteAPIView.as_view(), name='delete comment'),
+
 )
 

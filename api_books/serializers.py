@@ -198,3 +198,9 @@ class ShowAllUsersCommentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = ('id', 'text', 'review', 'user', 'publication_date')
+
+
+class CommentDeleteSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Comment
+        fields = ('id', )

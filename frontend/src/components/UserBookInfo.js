@@ -161,7 +161,55 @@ const UserBookInfo = (props) => {
             .catch(console.error)
     }, [userId]);
 
+    const deleteReview = async (e) => {
+        e.preventDefault()
+        let reviewId = e.currentTarget.getAttribute("data-value");
+        let token = getAccessToken();
+        let data = {
+            id: reviewId
+        }
+        console.log(data)
+        await axios.delete(`${URL}api_books/delete_review/${reviewId}/`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                data
+            })
+            .then((result) => {
+                console.log(result.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
 
+    const deleteComment = async (e) => {
+        e.preventDefault()
+        let commentId = e.currentTarget.getAttribute("data-value");
+        let token = getAccessToken();
+        let data = {
+            id: commentId
+        }
+        console.log(data)
+        await axios.delete(`${URL}api_books/delete_comment/${commentId}/`,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`
+                },
+                data
+            })
+            .then((result) => {
+                console.log(result.data);
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+    }
     return (
         <div>
             {wantToRead.length > 0 ?
@@ -203,7 +251,11 @@ const UserBookInfo = (props) => {
                 <ul>
                     {reviews.map((item) => <li
                         key={item.id}>{item.content} on {item.book.title} by {item.book.author} with
-                        rating {item.rating} out of 5</li>)}
+                        rating {item.rating} out of 5
+
+                            <button data-value={item.id} onClick={deleteReview}>Delete Review</button>
+
+                    </li>)}
                 </ul>
             </div>
                 : `${person} ${person === "You" ? "Have" : "Has"} 0 reviews` }
@@ -213,7 +265,10 @@ const UserBookInfo = (props) => {
                 <h1>{person} {person === "You" ? "Have" : "Has"} Posted {comments.length} comments:</h1>
                 <ul>
                     {comments.map((item) => <li
-                        key={item.id}>{item.text} on {item.review.user.username}'s review of {item.review.book.title} at <DateFormatter date={item.publication_date} /></li>)}
+                        key={item.id}>{item.text} on {item.review.user.username}'s review of {item.review.book.title} at <DateFormatter date={item.publication_date} />
+                        <button data-value={item.id} onClick={deleteComment}>Delete Comment</button>
+
+                    </li>)}
                 </ul>
             </div>
                 : `${person} ${person === "You" ? "Have" : "Has"} commented 0 times.` }

@@ -10,7 +10,7 @@ from api_books.serializers import BookAddSerializer, BooksListSerializer, Catego
     BookDeleteReviewSerializer, WantToReadBook, AddWantToReadBookSerializer, AddToCurrentlyReadingSerializer, \
     CurrentlyReadingSerializer, ChangeIsReadSerializer, BookIsReadSerializer, BookShowReviewSerializer, ShelfSerializer, \
     AddBookToCustomShelfSerializer, AddCommentToReviewSerializer, ShowCommentsToReviewSerializer, \
- ShowAllUsersCommentsSerializer
+    ShowAllUsersCommentsSerializer, CommentDeleteSerializer
 
 
 class BooksListView(ListAPIView):
@@ -358,3 +358,11 @@ class ShowAllUsersComments(ListAPIView):
         pk = self.kwargs.get(self.lookup_url_kwarg)
         queryset = Comment.objects.filter(user=pk)
         return queryset
+
+
+class CommentDeleteAPIView(RetrieveDestroyAPIView):
+    queryset = Comment.objects.all()
+    serializer_class = CommentDeleteSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )

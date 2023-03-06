@@ -7,12 +7,9 @@ import axios from "axios";
 const Home = () => {
   const {user} = useContext(AuthContext);
   const [categories, setCategories] = useState([])
-  // console.log(user)
 
-  // const url = 'http://127.0.0.1:8000/'
-  // useEffect(() => {
-  //   fetchData()
-  // }, [])
+
+
 
   function getAccessToken() {
         let result = window.localStorage.getItem('authTokens');
@@ -91,11 +88,6 @@ const Home = () => {
       {user && <UserInfo user={user} />}
       <h1>You are on home page!</h1>
         <h2>Hello, {user.email}!</h2>
-        {/*{categories.map(c => (*/}
-        {/*        <div key={c.id}>*/}
-        {/*            <p>{c.name}</p>*/}
-        {/*        </div>*/}
-        {/*    ))}*/}
     </section>
   );
     }

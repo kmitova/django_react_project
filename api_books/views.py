@@ -186,7 +186,7 @@ class ReviewDeleteAPIView(RetrieveDestroyAPIView):
     )
 
 
-class AllReviewsOfThisBook(ListAPIView):
+class AllOtherReviewsOfThisBook(ListAPIView):
     queryset = Review.objects.all()
     serializer_class = BookShowReviewSerializer
     permission_classes = (
@@ -195,6 +195,17 @@ class AllReviewsOfThisBook(ListAPIView):
 
     def get_queryset(self):
         return Review.objects.exclude(user=self.request.user.id)
+
+
+class AllReviewsOfThisBook(ListAPIView):
+    queryset = Review.objects.all()
+    serializer_class = BookShowReviewSerializer
+    permission_classes = (
+        permissions.IsAuthenticated,
+    )
+
+    # def get_queryset(self):
+    #     return Review.objects.exclude(user=self.request.user.id)
 
 
 class AllReviewsByUserAPIView(ListAPIView):

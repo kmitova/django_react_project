@@ -12,6 +12,7 @@ const ReviewSection = (props) => {
     const { book } = props;
     const [review, setReview] = useState('')
     const [reviews, setReviews] = useState([])
+    const [avgRating, setAvgRating] = useState(0)
 
 
     useEffect(() => {
@@ -72,6 +73,38 @@ const ReviewSection = (props) => {
         .catch(console.error)
     }, [book.id])
 
+    useEffect(() => {
+        const fetchAllReviews = async () => {
+            let token = getAccessToken();
+            let result = await axios.get(`${URL}api_books/show_all_reviews_of_book/`, {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer  ${token}`
+                }
+            })
+            if (result.status === 200) {
+                console.log(result.data)
+                let ratings = []
+                    for (let i of result.data) {
+                        console.log(i.book, book.id)
+                        if (i.book.id === book.id) {
+                            ratings.push(Number(i.rating))
+                        }
+
+                    }
+                        const sum = ratings.reduce((a, c) => a + c, 0)
+                        console.log(sum / ratings.length)
+                        setAvgRating((sum / ratings.length).toFixed(2))
+                }
+                else {
+                    console.log('no review of this book from this user yet')
+                }
+        }
+        fetchAllReviews()
+        .catch(console.error)
+    }, [book.id])
+
 
 
     const handleEditChange = (e) => {
@@ -91,6 +124,7 @@ const ReviewSection = (props) => {
                     <h2>Your review of {book.title}</h2>
                     <EditDeleteReview book={book} review={review} handleEditChange={handleEditChange}/>
                 </div>}
+            <p>Average rating of this book: {avgRating}</p>
             <ShowOtherReviews book={book} reviews={reviews}/>
 
 

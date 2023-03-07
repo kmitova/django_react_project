@@ -4,9 +4,9 @@ from api_books.views import BookDetailsAPIView, CategoriesAPIView, BooksListView
     BookStatusUpdateAPIView, ReviewAddAPIView, ReviewAPIView, ReviewUpdateAPIView, ReviewDeleteAPIView, BookStatusView, \
     WantToReadAddBookAPIView, WantToReadViewAPIView, RemoveFromWantToReadViewAPIView, CurrentlyReadingAddAPIView, \
     CurrentlyReadingAPIView, RemoveFromCurrentlyReadingAPIView, IsReadAPIView, \
-    RemoveIsReadAPIView, AllReviewsOfThisBook, AllReviewsByUserAPIView, ListAddShelfAPIView, \
+    RemoveIsReadAPIView, AllOtherReviewsOfThisBook, AllReviewsByUserAPIView, ListAddShelfAPIView, \
     AddViewBookToCustomShelfAPIView, BooksOnCustomShelvesAPIView, ShowCustomShelvesBooks, \
-    AddCommentToReviewAPIView, ShowCommentsOnReview, ShowAllUsersComments, CommentDeleteAPIView
+    AddCommentToReviewAPIView, ShowCommentsOnReview, ShowAllUsersComments, CommentDeleteAPIView, AllReviewsOfThisBook
 
 urlpatterns = (
     path('books/', BooksListView.as_view(), name='books list'),
@@ -29,8 +29,9 @@ urlpatterns = (
     path('book/<int:pk>/', BookDetailsAPIView.as_view(), name='details book'),
     path('add_review/', ReviewAddAPIView.as_view(), name='add review'),
     path('show_review/', ReviewAPIView.as_view(), name='show review'),
-    path('show_other_reviews/', AllReviewsOfThisBook.as_view(), name='show other reviews'),
+    path('show_other_reviews/', AllOtherReviewsOfThisBook.as_view(), name='show other reviews'),
     path('show_reviews_of_user/<int:pk>/', AllReviewsByUserAPIView.as_view(), name='show reviews by this user'),
+    path('show_all_reviews_of_book/', AllReviewsOfThisBook.as_view(), name='show all reviews of book'),
 
     path('edit_review/<int:pk>/', ReviewUpdateAPIView.as_view(), name='edit review'),
     path('delete_review/<int:pk>/', ReviewDeleteAPIView.as_view(), name='delete review'),

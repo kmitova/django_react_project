@@ -16,7 +16,7 @@ function Register() {
   };
 
   return (
-    <section>
+    <section className="mt-[100px]">
       <form onSubmit={handleSubmit}>
         <h1>Register</h1>
         <hr />

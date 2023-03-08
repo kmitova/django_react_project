@@ -15,6 +15,8 @@ import UserDetails from "./components/UserDetails";
 import ProfilePage from "./views/ProfilePage";
 import EditProfile from "./components/PofileEdit";
 import CustomShelf from "./components/CustomShelf";
+import About from "./views/aboutPages/About";
+import Privacy from "./views/aboutPages/Privacy";
 
 
 
@@ -36,6 +38,8 @@ function App() {
             <Route element={<ProfilePage />} path="/your_profile/:id"/>
             <Route element={<EditProfile />} path="/edit-profile/:id"/>
             <Route element={<CustomShelf />} path="/shelf/:id"/>
+            <Route element={<About />} path="/about"/>
+            <Route element={<Privacy />} path="/privacy"/>
           </Routes>
         </AuthProvider>
         <Footer />

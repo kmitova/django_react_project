@@ -17,8 +17,9 @@ import EditProfile from "./components/PofileEdit";
 import CustomShelf from "./components/CustomShelf";
 import About from "./views/aboutPages/About";
 import Privacy from "./views/aboutPages/Privacy";
-
-
+import Careers from "./views/aboutPages/Careers";
+import Help from "./views/aboutPages/Help";
+import Teams from "./views/aboutPages/Teams";
 
 function App() {
   return (
@@ -40,6 +41,9 @@ function App() {
             <Route element={<CustomShelf />} path="/shelf/:id"/>
             <Route element={<About />} path="/about"/>
             <Route element={<Privacy />} path="/privacy"/>
+            <Route element={<Careers />} path="/careers"/>
+            <Route element={<Help />} path="/help"/>
+            <Route element={<Teams />} path="/teams"/>
           </Routes>
         </AuthProvider>
         <Footer />

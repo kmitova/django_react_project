@@ -20,7 +20,7 @@ const LoginPage = () => {
   };
 
   return (
-    <section className='p-8 m-16'>
+    <section className=''>
       <form onSubmit={handleSubmit}>
         <h1>Login </h1>
         <hr />

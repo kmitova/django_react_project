@@ -36,6 +36,7 @@ const Navbar = () => {
             .catch(console.error)
     }, [])
   return (
+      <div className="mb-[100px]">
       <div className="w-[100%] h-[80px] z-10 bg-zinc-200 fixed drop-shadow-lg border-4 border-indigo-200">
           <div className="px-2 flex justify-between items-center w-full h-full">
               <div className="flex items-center">
@@ -113,7 +114,7 @@ const Navbar = () => {
 
                       }
       </div>
-
+        </div>
   )
     // <nav className='flex-no-wrap relative flex w-full items-center justify-between bg-neutral-100 py-4 shadow-md shadow-black/5 dark:bg-neutral-600 dark:shadow-black/10 lg:flex-wrap lg:justify-start'>
     //   <div className='flex w-full flex-wrap items-center justify-between px-6'>

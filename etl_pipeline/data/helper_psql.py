@@ -24,9 +24,9 @@ def psql_connection_test():
     try:
         logging.info('Connecting to postgresql database...')
         connection = psycopg2.connect(host='localhost',
-                                      database='django_react_project_db',
-                                      user='postgres',
-                                      password='1123QwER')
+                                      database=env('DATABASE_NAME'),
+                                      user=env('DATABASE_USER'),
+                                      password=env('DATABASE_PASSWORD'))
         cursor = connection.cursor()
         logging.info('postgresql database version:')
         cursor.execute('SELECT version()')
